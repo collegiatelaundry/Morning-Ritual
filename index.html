@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sacred Morning Ritual</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Morning Ritual">
+<meta name="theme-color" content="#f6f4ef">
+<style>
+  :root {
+    --sq1: #22332d; --sq2: #3a564c; --sq3: #5d8272; --sq4: #8fc3ad; --sq5: #baecd4;
+    --bg: #f6f4ef;
+    --card: #ffffff;
+    --ink: #2d3436;
+    --ink-soft: #6b7280;
+    --accent: #4a7c6f;
+    --accent-soft: #e3ede9;
+    --gold: #b08d4f;
+    --done: #9ca3af;
+    --line: #e7e2d8;
+    --shadow: 0 1px 3px rgba(45,52,54,.06), 0 8px 24px rgba(45,52,54,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sq1: #2c3a34; --sq2: #3f5c51; --sq3: #5d8272; --sq4: #8fc3ad; --sq5: #baecd4;
+      --bg: #1c1f22;
+      --card: #26292d;
+      --ink: #e8e6e1;
+      --ink-soft: #9aa0a6;
+      --accent: #7fb3a3;
+      --accent-soft: #2f3d39;
+      --gold: #cfa96b;
+      --done: #6b7280;
+      --line: #34383d;
+      --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    background: var(--bg); color: var(--ink);
+    padding: calc(24px + env(safe-area-inset-top)) 16px calc(92px + env(safe-area-inset-bottom));
+    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 10px; }
+  header h1 { font-size: 1.7rem; font-weight: 650; letter-spacing: -.02em; }
+  header p { color: var(--ink-soft); margin-top: 6px; font-size: .95rem; }
+  .streak-chip {
+    display: inline-block; margin-top: 10px; font-size: .8rem; font-weight: 650;
+    color: var(--gold); border: 1px solid var(--gold); border-radius: 999px;
+    padding: 3px 12px; opacity: .9;
+  }
+  .epigraph {
+    text-align: center; color: var(--ink-soft); font-style: italic; font-size: .86rem;
+    max-width: 460px; margin: 14px auto 26px; line-height: 1.55;
+  }
+  .epigraph .epigraph-author { display: block; font-style: normal; font-size: .78rem; margin-top: 4px; color: var(--gold); }
+
+  .mini-scale { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 10px; }
+  .mini-scale button {
+    min-width: 30px; height: 30px; border-radius: 8px; border: 1.5px solid var(--accent);
+    background: none; color: var(--accent); font-weight: 650; cursor: pointer;
+    font-family: inherit; font-size: .75rem; transition: all .12s; padding: 0 6px;
+  }
+  .mini-scale button.sel { background: var(--accent); color: #fff; }
+  .mit-row .mit-btn { border-radius: 999px; padding: 0 16px; }
+
+  .grace-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .grace-btn {
+    background: none; border: 1px solid var(--line); color: var(--ink-soft);
+    border-radius: 999px; padding: 6px 13px; font-size: .78rem; cursor: pointer;
+    font-family: inherit; transition: all .15s;
+  }
+  .grace-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .grace-btn.on { background: var(--gold); border-color: var(--gold); color: #fff; }
+  .cal-legend { flex-wrap: wrap; row-gap: 4px; }
+  .cal-legend .dot.dy { background: #2e5348; }
+  .cal-legend .dot.dg { background: var(--accent); }
+  .cal-legend .dot.dl { background: #a8c8bd; }
+  .cal-legend .dot.db { background: #7fa3c4; }
+  .cal-legend .dot.dv2 { background: #f0dfa0; }
+  .grace-label { font-size: .78rem; color: var(--ink-soft); align-self: center; }
+  .cal-legend .dot.evedot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); align-self: center; }
+
+  .wave-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .wave-btn {
+    flex: 1; background: none; border: 1px solid var(--line); color: var(--ink-soft);
+    border-radius: 10px; padding: 7px 0; font-size: .8rem; font-weight: 620;
+    cursor: pointer; font-family: inherit; transition: all .15s;
+  }
+  .wave-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .assimil-note { font-size: .76rem; color: var(--ink-soft); font-style: italic; margin-top: 10px; }
+  .assimil-note b { color: var(--accent); font-style: normal; }
+
+  .week-card {
+    background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
+    padding: 16px 18px; margin-bottom: 22px; font-size: .88rem; color: var(--ink-soft);
+  }
+  .week-card strong { color: var(--ink); display: block; margin-bottom: 6px; font-size: .95rem; }
+
+  .progress-card {
+    background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
+    padding: 18px 22px; margin-bottom: 22px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .ring { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
+  .ring svg { transform: rotate(-90deg); }
+  .ring .track { stroke: var(--accent-soft); }
+  .ring .fill { stroke: var(--accent); transition: stroke-dashoffset .45s ease; }
+  .ring .pct {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: .85rem; font-weight: 650; color: var(--accent);
+  }
+  .progress-text { flex: 1; }
+  .progress-text strong { display: block; font-size: 1.02rem; }
+  .progress-text span { color: var(--ink-soft); font-size: .88rem; }
+  #resetBtn {
+    background: none; border: 1px solid var(--line); color: var(--ink-soft);
+    border-radius: 10px; padding: 8px 14px; font-size: .85rem; cursor: pointer;
+    transition: all .15s;
+  }
+  #resetBtn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .phase-label {
+    font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--gold); margin: 22px 4px 10px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .phase-time { font-size: .68rem; font-weight: 650; letter-spacing: .03em; opacity: .75; }
+  .phase-note {
+    font-size: .78rem; color: var(--ink-soft); font-style: italic;
+    margin: -6px 4px 10px;
+  }
+  ol.steps { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .step {
+    background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
+    padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start;
+    cursor: pointer; transition: transform .12s ease, opacity .3s;
+  }
+  .step:hover { transform: translateY(-1px); }
+  .step.done { opacity: .62; }
+  .checkbox {
+    width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0; margin-top: 2px;
+    border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center;
+    transition: background .15s; background: transparent;
+  }
+  .step.done .checkbox { background: var(--accent); }
+  .checkbox svg { opacity: 0; transition: opacity .15s; }
+  .step.done .checkbox svg { opacity: 1; }
+  .step-body { flex: 1; }
+  .step-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .step-title { font-weight: 620; font-size: 1rem; }
+  .step.done .step-title { text-decoration: line-through; color: var(--done); }
+  .step-time {
+    font-size: .78rem; font-weight: 650; color: var(--accent);
+    background: var(--accent-soft); border-radius: 999px; padding: 2px 10px; white-space: nowrap;
+  }
+  .step-desc { color: var(--ink-soft); font-size: .88rem; margin-top: 4px; }
+  .step-why { color: var(--ink-soft); font-size: .8rem; margin-top: 6px; font-style: italic; }
+  .step-why::before { content: "why · "; font-style: normal; font-weight: 650; color: var(--accent); }
+
+  .cal-card {
+    background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
+    padding: 16px 18px; margin-bottom: 22px;
+  }
+  .cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .cal-head strong { font-size: .95rem; }
+  .cal-nav {
+    background: none; border: 1px solid var(--line); color: var(--ink-soft);
+    border-radius: 10px; width: 34px; height: 34px; font-size: 1.1rem; cursor: pointer;
+    transition: all .15s; line-height: 1;
+  }
+  .cal-nav:hover { border-color: var(--accent); color: var(--accent); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+  .cal-dow { margin-bottom: 6px; }
+  .cal-dow span {
+    text-align: center; font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+    color: var(--ink-soft); text-transform: uppercase;
+  }
+  .cal-day {
+    aspect-ratio: 1; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    font-size: .78rem; color: var(--ink-soft); border: 1.5px solid transparent;
+    position: relative;
+  }
+  .cal-day.eve::after {
+    content: ""; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+    width: 5px; height: 5px; border-radius: 50%; background: var(--gold);
+  }
+  .cal-day.green { background: var(--accent); color: #fff; font-weight: 650; }
+  .cal-day.gold-day { background: #2e5348; color: #fff; font-weight: 650; }
+  .cal-day.lightgreen { background: #a8c8bd; color: #2d3436; font-weight: 650; }
+  .cal-day.blue { background: #7fa3c4; color: #fff; font-weight: 650; }
+  .cal-day.violet { background: #f0dfa0; color: #6b5a23; font-weight: 650; }
+  .cal-day.today { border-color: var(--gold); color: var(--gold); font-weight: 650; }
+  .cal-day.today.green, .cal-day.today.gold-day, .cal-day.today.blue { color: #fff; }
+  .cal-day.today.lightgreen { color: #2d3436; }
+  .cal-legend { margin-top: 10px; font-size: .76rem; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+  .cal-legend .dot { width: 12px; height: 12px; border-radius: 4px; background: var(--accent); display: inline-block; }
+
+  .assimil-card {
+    background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
+    padding: 16px 18px;
+  }
+  .assimil-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .assimil-head strong { font-size: .95rem; }
+  .assimil-hint { color: var(--ink-soft); font-size: .78rem; }
+  .assimil-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+  .lesson {
+    aspect-ratio: 1; border-radius: 7px; border: 1.5px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .62rem; font-weight: 650; color: var(--ink-soft);
+    cursor: pointer; user-select: none; transition: all .12s;
+    background: transparent;
+  }
+  .lesson:hover { border-color: var(--accent); color: var(--accent); }
+  .lesson.done { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .lesson.next { border-color: var(--gold); color: var(--gold); }
+
+  .export-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: var(--card); border-radius: 16px; box-shadow: var(--shadow);
+    padding: 14px 18px; margin-top: 16px;
+  }
+  .export-row label { font-size: .92rem; font-weight: 620; }
+  .export-row select {
+    border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px;
+    font-size: .82rem; color: var(--accent); background: var(--card);
+    font-family: inherit; font-weight: 620; max-width: 200px;
+  }
+
+  .mit-reason, .step-input {
+    display: block; width: 100%; box-sizing: border-box; margin-top: 10px;
+    border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px;
+    font-size: .85rem; font-family: inherit; color: var(--ink); background: var(--bg);
+    resize: vertical;
+  }
+  .mit-reason::placeholder, .step-input::placeholder { color: var(--ink-soft); font-style: italic; }
+
+  .cal-day.selected { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(176,141,79,.3); cursor: pointer; }
+  .cal-day { cursor: pointer; }
+  .dd-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .dd-head strong { font-size: .95rem; }
+  .dd-close {
+    background: none; border: none; color: var(--ink-soft); font-size: .9rem;
+    cursor: pointer; font-family: inherit; padding: 2px 6px;
+  }
+  .dd-summary { font-size: .8rem; color: var(--ink-soft); margin: 6px 0 4px; line-height: 1.55; }
+  .dd-summary b { color: var(--accent); }
+  .dd-sub {
+    font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gold); margin: 12px 0 6px;
+  }
+  .grace-btn.dd-sick.on { background: #7fa3c4; border-color: #7fa3c4; color: #fff; }
+  .grace-btn.dd-travel.on { background: #f0dfa0; border-color: #e3cd82; color: #6b5a23; }
+  .dd-addrow { display: flex; gap: 8px; }
+  .dd-note-input { margin-bottom: 0; flex: 1; }
+  .dd-add {
+    border: none; border-radius: 10px; padding: 0 16px; background: var(--accent);
+    color: #fff; font-weight: 650; font-size: .82rem; font-family: inherit; cursor: pointer;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .chip {
+    background: var(--accent-soft); color: var(--ink); border-radius: 999px;
+    padding: 4px 12px; font-size: .78rem; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .chip button {
+    background: none; border: none; color: var(--ink-soft); cursor: pointer;
+    font-family: inherit; font-size: .75rem; padding: 0;
+  }
+  .chip button:hover { color: var(--accent); }
+
+  .sleep-score-input {
+    display: block; width: 110px; box-sizing: border-box; margin-top: 10px;
+    border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
+    font-size: .85rem; font-family: inherit; color: var(--ink); background: var(--bg);
+  }
+  .sleep-score-input::placeholder { color: var(--ink-soft); font-style: italic; }
+  .sleep-rate-row { margin-top: 8px; }
+  .sleep-rate-row button { font-size: .7rem; }
+
+  .sleep-note-btn {
+    background: none; border: none; cursor: pointer; padding: 2px 6px;
+    color: var(--gold); opacity: .55; vertical-align: middle; transition: opacity .15s;
+    margin-top: 8px; display: inline-flex; align-items: center;
+  }
+  .sleep-note-btn:hover { opacity: 1; }
+  .sleep-nodata-btn {
+    background: none; border: none; cursor: pointer; font-family: inherit;
+    font-size: .72rem; color: var(--ink-soft); text-decoration: underline dotted;
+    opacity: .6; margin: 8px 0 0 10px; padding: 2px 4px;
+  }
+  .sleep-nodata-btn.on { opacity: 1; color: var(--accent); font-weight: 650; text-decoration: none; }
+  .cal-day.sq1 { background: var(--sq1); color: #e8e6e1; font-weight: 650; }
+  .cal-day.sq2 { background: var(--sq2); color: #e8e6e1; font-weight: 650; }
+  .cal-day.sq3 { background: var(--sq3); color: #fff; font-weight: 650; }
+  .cal-day.sq4 { background: var(--sq4); color: #22332d; font-weight: 650; }
+  .cal-day.sq5 { background: var(--sq5); color: #22332d; font-weight: 650; }
+  .cal-star {
+    position: absolute; top: -1px; right: 0; font-size: .8rem; line-height: 1;
+    color: #f7cb2d; pointer-events: none;
+    text-shadow: 0 1px 2px rgba(45, 52, 54, .5);
+  }
+  .cal-star.bright {
+    color: #c9930f;
+    text-shadow: 0 0 1px rgba(255, 255, 255, .7), 0 1px 2px rgba(45, 52, 54, .45);
+  }
+  .cal-day.nolog { color: var(--done); text-decoration: line-through; opacity: .65; }
+  .grace-btn.dd-nolog.on { background: #9aa3ab; border-color: #9aa3ab; color: #fff; }
+  .grace-btn.dd-edit { border-color: #b0765a; color: #b0765a; font-weight: 650; }
+  .grace-btn.dd-edit:hover { background: #b0765a; color: #fff; }
+
+  .collapser { cursor: pointer; user-select: none; }
+  .collapser .fold { font-size: .8rem; opacity: .7; margin-left: 8px; }
+  .amber-warn {
+    background: #f5e3c8; border-radius: 12px; padding: 10px 14px;
+    font-size: .8rem; color: #8a6a2f; margin-bottom: 14px; line-height: 1.45;
+  }
+  @media (prefers-color-scheme: dark) {
+    .amber-warn { background: #3d3421; color: #d9b874; }
+  }
+  .mit-display {
+    margin: 8px 0 4px; border-left: 3px solid var(--gold);
+    padding: 6px 12px; background: rgba(176, 141, 79, .1);
+    border-radius: 0 10px 10px 0; font-size: .85rem; font-style: italic;
+  }
+  .mit-display b {
+    display: block; font-style: normal; font-size: .66rem; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 2px;
+  }
+  body.evening-mode .mit-display { background: rgba(207, 169, 107, .12); color: #e6dcc3; border-left-color: #cfa96b; }
+  body.evening-mode .mit-display b { color: #cfa96b; }
+  .ex-day { position: relative; }
+  .ex-day .ex-num { position: absolute; top: 2px; left: 4px; font-size: .55rem; color: var(--ink-soft); }
+  .ex-day .ex-glyph { font-size: 1.05rem; line-height: 1; letter-spacing: -1px; }
+  .ex-star, .ex-leg-star { color: #c9930f; text-shadow: 0 1px 2px rgba(45, 52, 54, .25); }
+  .ex-chk, .ex-leg-chk { color: var(--accent); font-weight: 800; }
+  .cal-day.day-fb { background: #7fa3c4; color: #fff; font-weight: 650; }
+  .cal-day.day-fy { background: #e8c85a; color: #4a3d14; font-weight: 650; }
+  .cal-day.day-fg { background: #4a7c6f; color: #fff; font-weight: 650; }
+  .cal-day.day-fr { background: #c96b6b; color: #fff; font-weight: 650; }
+  .cal-day.day-fgr { background: #a8adb3; color: #2d3436; font-weight: 650; }
+  .cal-legend .dot.dfb { background: #7fa3c4; }
+  .cal-legend .dot.dfy { background: #e8c85a; }
+  .cal-legend .dot.dfg { background: #4a7c6f; }
+  .cal-legend .dot.dfr { background: #c96b6b; }
+  .cal-legend .dot.dfgr { background: #a8adb3; }
+  .feel-row { margin-top: 8px; }
+  .feel-row .feel-btn { border-radius: 999px; font-size: .7rem; padding: 0 11px; }
+  .feel-row .feel-btn.fb { border-color: #7fa3c4; color: #6489a8; }
+  .feel-row .feel-btn.fb.sel { background: #7fa3c4; border-color: #7fa3c4; color: #fff; }
+  .feel-row .feel-btn.fy { border-color: #d9b74a; color: #a8823f; }
+  .feel-row .feel-btn.fy.sel { background: #e8c85a; border-color: #e8c85a; color: #4a3d14; }
+  .feel-row .feel-btn.fg { border-color: #4a7c6f; color: #4a7c6f; }
+  .feel-row .feel-btn.fg.sel { background: #4a7c6f; border-color: #4a7c6f; color: #fff; }
+  .feel-row .feel-btn.fr { border-color: #c96b6b; color: #b55f5f; }
+  .feel-row .feel-btn.fr.sel { background: #c96b6b; border-color: #c96b6b; color: #fff; }
+  .feel-row .feel-btn.fgr { border-color: #a8adb3; color: #82898f; }
+  .feel-row .feel-btn.fgr.sel { background: #a8adb3; border-color: #a8adb3; color: #2d3436; }
+  .cal-legend .dot.sq1 { background: var(--sq1); }
+  .cal-legend .dot.sq2 { background: var(--sq2); }
+  .cal-legend .dot.sq3 { background: var(--sq3); }
+  .cal-legend .dot.sq4 { background: var(--sq4); }
+  .cal-legend .dot.sq5 { background: var(--sq5); }
+  .cal-legend .dot.mq1 { background: var(--mq1); }
+  .cal-legend .dot.mq2 { background: var(--mq2); }
+  .cal-legend .dot.mq3 { background: var(--mq3); }
+  .cal-legend .dot.mq4 { background: var(--mq4); }
+  .cal-legend .dot.mq5 { background: var(--mq5); }
+
+  .photo-bar {
+    height: 6px; border-radius: 999px; background: var(--accent-soft);
+    margin: 4px 0 14px; overflow: hidden;
+  }
+  .photo-bar-fill { height: 100%; border-radius: 999px; background: var(--accent); width: 0; transition: width .4s ease; }
+  .photo-year { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .photo-year b { width: 34px; font-size: .68rem; color: var(--ink-soft); font-weight: 700; }
+  .photo-months { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; flex: 1; }
+  .pm {
+    aspect-ratio: 1; border-radius: 5px; border: 1.5px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .52rem; font-weight: 650; color: var(--ink-soft);
+    cursor: pointer; user-select: none; transition: all .12s; background: transparent;
+  }
+  .pm:hover { border-color: var(--accent); color: var(--accent); }
+  .pm.done { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .pm.next { border-color: var(--gold); color: var(--gold); }
+  .pm.off { visibility: hidden; pointer-events: none; }
+
+  .sync-note { font-size: .8rem; color: var(--ink-soft); margin-bottom: 10px; line-height: 1.5; }
+  .sync-note b { color: var(--accent); }
+  .sync-input {
+    display: block; width: 100%; box-sizing: border-box; margin-bottom: 8px;
+    border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px;
+    font-size: .85rem; font-family: inherit; color: var(--ink); background: var(--bg);
+  }
+  .sync-input::placeholder { color: var(--ink-soft); font-style: italic; }
+  .sync-btn {
+    display: block; width: 100%; border: none; border-radius: 10px; padding: 10px 0;
+    background: var(--accent); color: #fff; font-weight: 650; font-size: .88rem;
+    font-family: inherit; cursor: pointer;
+  }
+  .sync-btn:hover { opacity: .92; }
+
+  /* ===== morning mode: first light — the warmth of a sunrise ===== */
+  @media (prefers-color-scheme: light) {
+    body.morning-mode {
+      background-image:
+        radial-gradient(ellipse 130% 55% at 50% -12%, rgba(233, 158, 74, .62), transparent 72%),
+        radial-gradient(ellipse 150% 50% at 50% 8%, rgba(243, 193, 125, .42), transparent 72%),
+        radial-gradient(ellipse 130% 42% at 50% 32%, rgba(249, 219, 172, .28), transparent 75%),
+        radial-gradient(ellipse 150% 55% at 50% 118%, rgba(74, 124, 111, .34), transparent 72%),
+        radial-gradient(ellipse 130% 40% at 50% 88%, rgba(104, 148, 132, .20), transparent 75%),
+        linear-gradient(180deg, #f7ddad 0%, #f5edd8 45%, #dfe7de 100%);
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    body.morning-mode .step,
+    body.morning-mode .progress-card,
+    body.morning-mode .assimil-card {
+      background: rgba(255, 255, 255, .78);
+    }
+    body.morning-mode .tabbar { background: rgba(255, 252, 245, .92); }
+  }
+  @media (prefers-color-scheme: dark) {
+    body.morning-mode {
+      background-image:
+        radial-gradient(ellipse 130% 50% at 50% -12%, rgba(205, 145, 70, .16), transparent 70%),
+        linear-gradient(180deg, #241f1a 0%, #1c1f22 55%);
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+
+  /* ===== evening mode: starry night ===== */
+  body.evening-mode {
+    background-image:
+      radial-gradient(1px 1px at 23px 41px, rgba(255,255,255,.55) 50%, transparent 51%),
+      radial-gradient(1px 1px at 141px 103px, rgba(255,255,255,.35) 50%, transparent 51%),
+      radial-gradient(1.4px 1.4px at 218px 57px, rgba(255,255,255,.45) 50%, transparent 51%),
+      radial-gradient(1px 1px at 79px 167px, rgba(255,255,255,.28) 50%, transparent 51%),
+      radial-gradient(1.3px 1.3px at 271px 139px, rgba(255,255,255,.32) 50%, transparent 51%),
+      radial-gradient(1px 1px at 177px 194px, rgba(255,255,255,.2) 50%, transparent 51%),
+      linear-gradient(180deg, #141c33 0%, #1b2542 45%, #253154 100%);
+    background-size: 310px 220px, 310px 220px, 310px 220px, 310px 220px, 310px 220px, 310px 220px, 100% 100%;
+    background-repeat: repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
+    background-attachment: fixed;
+  }
+  body.evening-mode header h1 { color: #e6ebf7; }
+  body.evening-mode header p { color: #8fa0c4; }
+  body.evening-mode .streak-chip { color: #cfa96b; border-color: #cfa96b; }
+  body.evening-mode .epigraph { color: #93a4c8; }
+  body.evening-mode .epigraph .epigraph-author { color: #cfa96b; }
+  body.evening-mode .phase-label { color: #cfa96b; }
+  body.evening-mode .phase-note { color: #8fa0c4; }
+  body.evening-mode .step {
+    background: rgba(255, 255, 255, .07);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .28);
+  }
+  body.evening-mode .step-title { color: #dfe6f5; }
+  body.evening-mode .step.done .step-title { color: #6d7ea6; }
+  body.evening-mode .step-desc, body.evening-mode .step-why { color: #93a4c8; }
+  body.evening-mode .step-why::before { color: #8fa3d0; }
+  body.evening-mode .checkbox { border-color: #8fa3d0; }
+  body.evening-mode .step.done .checkbox { background: #8fa3d0; }
+  body.evening-mode .step-time { color: #a9bade; background: rgba(143, 163, 208, .16); }
+  body.evening-mode .mini-scale button { border-color: #8fa3d0; color: #a9bade; }
+  body.evening-mode .mini-scale button.sel { background: #8fa3d0; color: #141c33; }
+  body.evening-mode .mit-reason, body.evening-mode .step-input {
+    background: rgba(255, 255, 255, .06); border-color: #3a4a75; color: #dfe6f5;
+  }
+  body.evening-mode .mit-reason::placeholder, body.evening-mode .step-input::placeholder { color: #7487ad; }
+  body.evening-mode .celebrate { background: rgba(143, 163, 208, .16); color: #a9bade; }
+  body.evening-mode .footer-note { color: #7487ad; }
+  body.evening-mode .tabbar { background: #1a2340; border-top-color: #2d3a5e; box-shadow: 0 -4px 16px rgba(0,0,0,.3); }
+  body.evening-mode .tab { color: #6d7ea6; }
+  body.evening-mode .tab.active { color: #a9bade; }
+  body.evening-mode .tab.active::after { background: #8fa3d0; }
+
+  .tabbar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
+    display: flex; background: var(--card); border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -4px 16px rgba(45,52,54,.06);
+  }
+  .tab {
+    flex: 1; background: none; border: none; cursor: pointer;
+    padding: 13px 0 14px; font-size: .85rem; font-weight: 620;
+    color: var(--ink-soft); font-family: inherit; transition: color .15s;
+  }
+  .tab.active { color: var(--accent); }
+  .tab.active::after {
+    content: ""; display: block; width: 28px; height: 3px; border-radius: 2px;
+    background: var(--accent); margin: 5px auto 0;
+  }
+
+  .footer-note {
+    margin-top: 26px; text-align: center; color: var(--ink-soft); font-size: .84rem;
+    padding: 0 12px;
+  }
+  #appVersion { opacity: .45; font-size: .72rem; letter-spacing: .04em; }
+  #backfillBanner {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: #b0765a; color: #fff; text-align: center; cursor: pointer;
+    font-size: .8rem; font-weight: 620; line-height: 1.4;
+    padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .25);
+  }
+  #backfillBanner b { font-weight: 750; }
+  body.backfill-mode { padding-top: calc(70px + env(safe-area-inset-top)); }
+  .celebrate {
+    display: none; margin-top: 22px; text-align: center; background: var(--accent-soft);
+    color: var(--accent); border-radius: 16px; padding: 18px; font-weight: 620;
+  }
+  .celebrate.show { display: block; animation: pop .4s ease; }
+  @keyframes pop { 0% { transform: scale(.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+</style>
+</head>
+<body class="morning-mode">
+<div id="backfillBanner" hidden>
+  Backfilling <b id="backfillDateLabel"></b> — changes save to that day · tap here to return to today
+</div>
+<div class="wrap">
+  <div id="viewRitual">
+  <header>
+    <h1>Sacred Morning Ritual</h1>
+    <p>Stillness. Clarity. Slowness.</p>
+  </header>
+  <p class="epigraph">
+    “You own your time only when you own your <b>attention</b>.”
+    <span class="epigraph-author">— Sandeep Swadia</span>
+  </p>
+  <div id="stepsRoot"></div>
+
+  <div class="phase-label">Assimil — Lesson Tracker</div>
+  <div class="assimil-card">
+    <div class="assimil-head">
+      <strong id="assimilCount">0 of 100 lessons</strong>
+      <span class="assimil-hint">Tap a lesson when you finish it</span>
+    </div>
+    <div class="assimil-grid" id="assimilGrid"></div>
+    <div class="assimil-note" id="assimilForecast" hidden></div>
+  </div>
+
+  <div class="progress-card">
+    <div class="ring">
+      <svg width="64" height="64" viewBox="0 0 64 64">
+        <circle class="track" cx="32" cy="32" r="27" fill="none" stroke-width="6"/>
+        <circle class="fill" id="ringFill" cx="32" cy="32" r="27" fill="none" stroke-width="6"
+                stroke-linecap="round" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+      </svg>
+      <div class="pct" id="pct">0%</div>
+    </div>
+    <div class="progress-text">
+      <strong id="progLabel">The morning is yours</strong>
+      <span id="progSub">Tap each step as you go</span>
+    </div>
+  </div>
+
+  <div class="celebrate" id="celebrate">Ritual complete — carry the stillness with you 🌿</div>
+
+  <p class="footer-note">
+    Short on time? The irreducible core: open the windows, brew the tea in sunlight, morning pages.
+    Twenty minutes of that is still a sacred morning. Consistency beats completeness.<br><br>
+    Progress saves on this device and resets automatically each new morning.<br>
+    <span id="appVersion">v2026-07-22.4</span>
+  </p>
+  </div><!-- /viewRitual -->
+
+  <div id="viewEvening" hidden>
+    <header>
+      <h1>Sacred Evening Ritual</h1>
+      <p>Calm. Winding down. Peace.</p>
+    </header>
+    <p class="epigraph">
+      “What went well today and what can you do differently tomorrow?”
+      <span class="epigraph-author">— Rangan Chatterjee</span>
+    </p>
+    <div id="eveStepsRoot"></div>
+    <div class="celebrate" id="celebrateEve">Day closed — sleep well 🌙</div>
+    <p class="footer-note">
+      The evening ritual is the morning ritual's quiet twin — it protects tomorrow's first hour from tonight.
+    </p>
+  </div>
+
+  <div id="viewCalendar" hidden>
+    <div class="amber-warn" id="syncWarn" hidden></div>
+    <div class="phase-label collapser" data-sec="ritual">Ritual Calendar<span class="fold">▾</span></div>
+    <div id="sec-ritual" class="cal-card">
+      <div class="cal-head">
+        <button class="cal-nav" id="calPrev" aria-label="Previous month">‹</button>
+        <strong id="calTitle"></strong>
+        <button class="cal-nav" id="calNext" aria-label="Next month">›</button>
+      </div>
+      <div class="cal-grid cal-dow">
+        <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend">
+        <span class="dot dy"></span> beyond the minimum ·
+        <span class="dot dg"></span> complete ·
+        <span class="dot dl"></span> partial ·
+        <span class="dot db"></span> sick ·
+        <span class="dot dv2"></span> travel
+      </div>
+      <div class="cal-legend"><span id="calTotal">0 mornings all-time</span></div>
+      <div class="assimil-note">Tap any day for its details, sick/travel marking, and body notes. Yesterday and the day before can be backfilled from there.</div>
+    </div>
+
+    <div class="phase-label" id="ddLabel" hidden>Day Details</div>
+    <div class="cal-card" id="ddCard" hidden>
+      <div class="dd-head">
+        <strong id="ddDate"></strong>
+        <button class="dd-close" id="ddClose" aria-label="Close">✕</button>
+      </div>
+      <div class="dd-summary" id="ddSummary"></div>
+      <div class="dd-sub">Mark this day</div>
+      <div class="grace-row">
+        <button class="grace-btn dd-sick" id="ddSick">Sick</button>
+        <button class="grace-btn dd-travel" id="ddTravel">Travel</button>
+        <button class="grace-btn dd-nolog" id="ddNoLog">Not logged</button>
+        <button class="grace-btn" id="ddClear">Clear</button>
+      </div>
+      <div class="grace-row" id="ddEditRow" hidden>
+        <button class="grace-btn dd-edit" id="ddEdit">✎ Edit this day (backfill)</button>
+      </div>
+      <div class="dd-sub">Body notes</div>
+      <div class="dd-addrow">
+        <input id="ddNoteInput" class="sync-input dd-note-input" placeholder="Add a body note…">
+        <button id="ddNoteAdd" class="dd-add">Add</button>
+      </div>
+      <div class="chips" id="ddChips"></div>
+    </div>
+
+    <div class="phase-label collapser" data-sec="sleep">Sleep Calendar<span class="fold">▾</span></div>
+    <div id="sec-sleep" class="cal-card">
+      <div class="cal-head"><strong id="sleepCalTitle"></strong></div>
+      <div class="cal-grid cal-dow">
+        <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+      </div>
+      <div class="cal-grid" id="sleepCal"></div>
+      <div class="cal-legend">
+        <span class="dot sq1"></span> very low ·
+        <span class="dot sq2"></span> low ·
+        <span class="dot sq3"></span> ok ·
+        <span class="dot sq4"></span> high ·
+        <span class="dot sq5"></span> very high
+      </div>
+      <div class="assimil-note" id="sleepEmpty">No sleep data yet — log it each morning in the Sleep check. Uses the same month as the calendar above.</div>
+    </div>
+
+    <div class="phase-label collapser" data-sec="mood">Mood Calendar<span class="fold">▾</span></div>
+    <div id="sec-mood" class="cal-card">
+      <div class="cal-head"><strong id="moodCalTitle"></strong></div>
+      <div class="cal-grid cal-dow">
+        <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+      </div>
+      <div class="cal-grid" id="moodCal"></div>
+      <div class="cal-legend">
+        <span class="dot dfb"></span> tired / down ·
+        <span class="dot dfy"></span> excited & happy ·
+        <span class="dot dfg"></span> peaceful & content
+      </div>
+      <div class="cal-legend">
+        <span class="dot dfr"></span> stressed & anxious ·
+        <span class="dot dfgr"></span> neutral
+      </div>
+      <div class="assimil-note" id="moodEmpty">Log the day's feeling in the evening check-in — its color lands here.</div>
+    </div>
+
+    <div class="phase-label collapser" data-sec="exercise">Exercise Calendar<span class="fold">▾</span></div>
+    <div id="sec-exercise" class="cal-card">
+      <div class="cal-head"><strong id="exCalTitle"></strong></div>
+      <div class="cal-grid cal-dow">
+        <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+      </div>
+      <div class="cal-grid" id="exCal"></div>
+      <div class="cal-legend"><span class="ex-leg-star">★</span> activity logged · <span class="ex-leg-chk">✓</span> over 5,000 steps</div>
+      <div class="assimil-note" id="exEmpty">Log your activity and steps in the evening Move section — they land here.</div>
+    </div>
+
+    <div class="phase-label collapser" data-sec="patterns">Patterns<span class="fold">▾</span></div>
+    <div class="week-card" id="weekCard">No data yet — patterns appear after a few mornings.</div>
+
+    <div class="phase-label collapser" data-sec="export">Export<span class="fold">▾</span></div>
+    <div id="sec-export" class="export-row">
+      <label for="exportSel">Export my data</label>
+      <select id="exportSel">
+        <option value="">Choose format…</option>
+        <option value="csv">Spreadsheet (CSV — opens in Excel)</option>
+        <option value="json">Raw data (JSON)</option>
+      </select>
+    </div>
+
+    <div class="phase-label collapser" data-sec="sync">Sync<span class="fold">▾</span></div>
+    <div id="sec-sync" class="cal-card">
+      <div id="syncSetup">
+        <div class="sync-note">Automatic backup to a <b>private</b> GitHub repository — the app saves your data there about 30 seconds after each change, and other devices pick it up on launch. One-time setup (see the guide), then connect below.</div>
+        <input id="syncOwner" class="sync-input" autocapitalize="none" autocorrect="off" placeholder="GitHub username">
+        <input id="syncRepo" class="sync-input" autocapitalize="none" autocorrect="off" placeholder="Data repository name (e.g. ritual-data)">
+        <input id="syncToken" class="sync-input" type="password" placeholder="Fine-grained access token">
+        <button id="syncConnect" class="sync-btn">Connect</button>
+        <div class="sync-note" id="syncSetupMsg"></div>
+      </div>
+      <div id="syncInfo" hidden>
+        <div class="sync-note"><b id="syncRepoLabel"></b></div>
+        <div class="sync-note" id="syncStatus">Not synced yet</div>
+        <div class="grace-row">
+          <button class="grace-btn" id="syncNow">Sync now</button>
+          <button class="grace-btn" id="syncDisconnect">Disconnect</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-label collapser" data-sec="photo">Photo Cleanup — Oct 2016 → Aug 2026<span class="fold">▾</span></div>
+    <div id="sec-photo" class="cal-card">
+      <div class="assimil-head">
+        <strong id="photoCount">0 of 119 months</strong>
+        <span class="assimil-hint">Tap a month once its photos are cleaned</span>
+      </div>
+      <div class="photo-bar"><div class="photo-bar-fill" id="photoBarFill"></div></div>
+      <div id="photoYears"></div>
+      <div class="assimil-note">One month at a time — ten years of photos, cleared for good. The gold outline marks your next one up.</div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabbar">
+  <button class="tab active" id="tabRitual">Morning</button>
+  <button class="tab" id="tabEvening">Evening</button>
+  <button class="tab" id="tabCalendar">Calendar</button>
+</nav>
+
+<script>
+  const PHASES = [
+    { label: "Silence", time: "6:15 – 7:30", steps: [
+      { t: "Wake in silence — phone stays exiled", m: "1 min",
+        d: "The phone is outside the bedroom and stays untouched for the first 1–2 hours. Sit up, feet on the floor, one slow breath." },
+      { t: "Freshen up", m: "5 min",
+        d: "Toilet, wash face, put contacts. A grounding and cleansing ritual." },
+      { t: "Open the windows", m: "2 min", g: "optional", noExceed: true,
+        d: "Back to your room, windows wide open. Let the morning air in — and drink a small glass of water while you're at it." },
+      { t: "Brew tea & 5 min quick clean-up", m: "15 min",
+        d: "Put the kettle on and tidy the kitchen while it works — yesterday's cups away, surfaces clear. Take the cup, go outside." },
+      { t: "Sleep check", m: "1 min", kind: "sleep",
+        d: "From the watch: last night's sleep score, and how it actually felt." }
+    ]},
+    { label: "The Ritual Core",
+      note: "Choose from the three practices below — ticking any of them fulfils this part of the ritual.",
+      steps: [
+      { t: "Meditate or make time for stillness", m: "10 min", g: "choice",
+        d: "Your practice: slow stretching with breath or simply do nothing.",
+        w: "Settle your nervous system, wake the body or simply Be." },
+      { t: "Read something that matters", m: "20–30 min", g: "choice",
+        d: "Feeding the mind and the soul before the world makes demands of it is what turns a routine into a ritual." },
+      { t: "Morning pages", m: "20 min", g: "choice",
+        d: "Longhand, stream of consciousness, no editing and no audience. Whatever is in the head goes onto the page.",
+        w: "Morning pages empty the mental cache — the noise lands on paper so clarity is what you carry into the day." }
+    ]},
+    { label: "German", time: "7:30 – 8:00", steps: [
+      { t: "Daily German", m: "5 min",
+        d: "Open Duolingo, do your lesson, close it.",
+        w: "A fixed daily slot is how a language habit compounds." },
+      { t: "Assimil — German learning", m: "30 min · optional", g: "optional",
+        d: "When there's time and appetite: one Assimil lesson. A bonus, not an obligation — skipping it costs nothing.",
+        w: "Assimil is where the deeper progress happens when you give it the space." }
+    ]},
+    { label: "Starting-up", time: "8:00 – 9:15", steps: [
+      { t: "Questions for today", m: "3 min", g: "optional", noExceed: true,
+        d: "1. What is one thing you deeply appreciate about your life?<br>2. What is the most important thing you have to do today?" },
+      { t: "Plan for the day", m: "5 min",
+        d: "Take a small card. Stamp the date, write the day, list the tasks — then designate one as the Most Important Task and mark it with an asterix.",
+        w: "Choosing your most important task means the day answers to you and not the other way around. You are in control of where to put your attention.",
+        input: { key: "mit", placeholder: "My most important task today…" } },
+      { t: "Morning mood check", m: "1 min", kind: "mood", logKey: "mood",
+        d: "The morning ritual is done. How do you feel?" }
+    ]}
+  ];
+
+  // ---- evening ritual ----
+  const EPHASES = [
+    { label: "Check In", steps: [
+      { t: "Did I accomplish the most important thing today?", m: "1 min", kind: "mit", logKey: "mitDone",
+        d: "Did you? And if not, why?",
+        w: "A gentle daily reckoning keeps things real. No judgment, just data." },
+      { t: "Walk after lunch", m: "10 min", g: "optional", noExceed: true,
+        d: "A short walk that blunts the afternoon dip. Tracked, not part of the %." }
+    ]},
+    { label: "Move", time: "16:45 – 17:30", steps: [
+      { t: "Chosen physical activity", m: "45 min",
+        d: "Immediately after work — leaving no space for sloth to claim me.",
+        input: { key: "moveActivity", placeholder: "What did you do? (walk, gym, yoga…)" },
+        stepsInput: true }
+    ]},
+    { label: "Tend", time: "17:30 – 21:00", steps: [
+      { t: "Dinner — prepared & eaten early", m: "by 18:45" },
+      { t: "Bonds — family check-in", m: "19:00 – 21:00",
+        d: "Check in with my partner and kids — ask how they are, giving my full undivided attention." },
+      { t: "Zettelkasten session", m: "30–60 min · optional", g: "optional",
+        d: "If you're in the mood, process the current topic that absorbs you into atomic notes.",
+        w: "Ideas filed tonight compound — but sleep matters more, and skipping costs nothing." }
+    ]},
+    { label: "Wind Down", time: "21:00 – 22:00", steps: [
+      { t: "Exile the phone", m: "2 min",
+        d: "The phone goes to its overnight home outside the bedroom — notifications off, out of reach until well after tomorrow's wake-up." },
+      { t: "Evening mood check", m: "1 min", kind: "mood", logKey: "eveningMood", feelings: true,
+        d: "Where did the day land, 1–10? And which feeling colored the day?" },
+      { t: "Today's debriefing", m: "5 min",
+        d: "Update your physical journal — any notable highlights or what happened today." },
+      { t: "Wash face", m: "5 min",
+        d: "The evening’s mirror-ritual where the whole day comes off. Thank yourself for a job well done.",
+        w: "A physical closing gesture tells the body the day is over." },
+      { t: "Read in bed", m: "20–30 min",
+        d: "Paper only. Read something for the soul and imagination. Read until the eyes agree it's time." }
+    ]}
+  ];
+
+  // ---- storage (guarded: falls back to in-memory if unavailable) ----
+  let scheduleSync = function () {}; // assigned by the sync module below
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) {
+      try { localStorage.setItem(k, v); } catch (e) {}
+      if (k.indexOf("ritual-sync") !== 0) scheduleSync();
+    },
+    del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  };
+  function dateKey(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  // the ritual day ends at 3 a.m., not midnight — logging at 00:30 still counts
+  // toward the evening you actually lived
+  const DAY_BOUNDARY_HOURS = 3;
+  function ritualNow() { return new Date(Date.now() - DAY_BOUNDARY_HOURS * 3600e3); }
+  const realToday = dateKey(ritualNow());
+  const yesterday = dateKey(new Date(ritualNow().getTime() - 864e5));
+  const dayBefore = dateKey(new Date(ritualNow().getTime() - 2 * 864e5));
+
+  // ---- backfill mode: edit yesterday or the day before through the normal tabs ----
+  let BACKFILL = false;
+  let backfillDate = null;
+  try {
+    const b = JSON.parse(localStorage.getItem("ritual-backfill") || "null");
+    if (b && b.date && (b.date === yesterday || b.date === dayBefore)) {
+      const ageMin = (Date.now() - new Date(b.setAt).getTime()) / 60000;
+      if (ageMin >= 0 && ageMin < 30) { BACKFILL = true; backfillDate = b.date; }
+      else localStorage.removeItem("ritual-backfill");
+    } else if (b) {
+      localStorage.removeItem("ritual-backfill");
+    }
+  } catch (e) {}
+
+  // "today" is the date all logging targets — usually the real day, or the backfill target
+  const today = BACKFILL ? backfillDate : realToday;
+
+  if (BACKFILL) {
+    const banner = document.getElementById("backfillBanner");
+    banner.hidden = false;
+    document.body.classList.add("backfill-mode");
+    document.getElementById("backfillDateLabel").textContent =
+      new Date(backfillDate + "T00:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+    banner.addEventListener("click", () => {
+      localStorage.removeItem("ritual-backfill");
+      location.reload();
+    });
+  }
+
+  const CIRC = 169.6;
+  const root = document.getElementById("stepsRoot");
+  const allSteps = PHASES.flatMap(p => p.steps);
+  let state = new Array(allSteps.length).fill(false);
+
+  // restore today's progress (a new day starts fresh automatically)
+  let stateRestored = false;
+  try {
+    const saved = JSON.parse(store.get("ritual-state") || "null");
+    if (saved && saved.date === today && Array.isArray(saved.checks) && saved.checks.length === allSteps.length) {
+      state = saved.checks.map(Boolean);
+      stateRestored = true;
+    }
+  } catch (e) {}
+  // no local state, but synced data from another device covers today → derive from the log
+  if (!stateRestored) {
+    try {
+      const e = logGet()[today];
+      if (e && Array.isArray(e.habits) && e.habits.length) state = allSteps.map(s => e.habits.indexOf(s.t) >= 0);
+    } catch (e) {}
+  }
+
+  // grace days: sick or travel — they explain a gap without judging it
+  let graceMap = {};
+  try {
+    const g = JSON.parse(store.get("ritual-grace2") || "null");
+    if (g && typeof g === "object" && !Array.isArray(g)) graceMap = g;
+    else {
+      const legacy = JSON.parse(store.get("ritual-grace") || "null");
+      if (Array.isArray(legacy)) legacy.forEach(d => { graceMap[d] = "sick"; });
+    }
+  } catch (e) {}
+  const graceSet = new Set(Object.keys(graceMap));
+
+  // (streaks removed by design — most of the time is good enough; history alone tells the story)
+
+  // the five qualitative feelings (evening check-in + feelings calendar)
+  const FEELINGS = [
+    { k: "tired", label: "Tired / down", cls: "fb" },
+    { k: "excited", label: "Excited & happy", cls: "fy" },
+    { k: "peaceful", label: "Peaceful & content", cls: "fg" },
+    { k: "stressed", label: "Stressed & anxious", cls: "fr" },
+    { k: "neutral", label: "Neutral", cls: "fgr" }
+  ];
+  const FEEL_BY_KEY = {};
+  FEELINGS.forEach(f => { FEEL_BY_KEY[f.k] = f; });
+
+  // shared builder: handles normal steps plus "mood" (1–10 scale) and "mit" (yes/no) steps
+  function buildStepList(phases, rootEl, stateArr, onChange, opts) {
+    opts = opts || {};
+    const built = [];
+    let idx = 0;
+    phases.forEach(phase => {
+      const label = document.createElement("div");
+      label.className = "phase-label";
+      label.textContent = phase.label;
+      if (phase.time) {
+        const t = document.createElement("span");
+        t.className = "phase-time";
+        t.textContent = phase.time;
+        label.appendChild(t);
+      }
+      rootEl.appendChild(label);
+      if (phase.note) {
+        const note = document.createElement("div");
+        note.className = "phase-note";
+        note.textContent = phase.note;
+        rootEl.appendChild(note);
+      }
+      const ol = document.createElement("ol");
+      ol.className = "steps";
+      phase.steps.forEach(s => {
+        const i = idx++;
+        const li = document.createElement("li");
+        li.className = "step" + (stateArr[i] ? " done" : "");
+        li.innerHTML = `
+          <div class="checkbox">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8.5L6.5 12L13 4.5" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head">
+              <span class="step-title">${s.t}</span>
+              <span class="step-time">${s.m}</span>
+            </div>
+            ${s.d ? `<div class="step-desc">${s.d}</div>` : ""}
+            ${s.w ? `<div class="step-why">${s.w}</div>` : ""}
+          </div>`;
+        const body = li.querySelector(".step-body");
+
+        function stampHabitTime(on) {
+          if (!opts.timesKey || BACKFILL) return; // no invented times for remembered days
+          try {
+            const entry = logGet()[today] || {};
+            const times = entry[opts.timesKey] || {};
+            if (on) times[s.t] = new Date().toISOString(); else delete times[s.t];
+            logMerge({ [opts.timesKey]: times });
+          } catch (e) {}
+        }
+
+        function paintScale(row, val) {
+          row.querySelectorAll("button").forEach(b => b.classList.toggle("sel", b.dataset.v === String(val)));
+        }
+
+        if (s.kind === "mood") {
+          // feelings-enabled mood steps only count as done when ALL THREE are logged:
+          // the 1–10 number, a feeling, and the why-text
+          function refreshMoodDone() {
+            const c = logGet()[today] || {};
+            stateArr[i] = s.feelings
+              ? !!(c[s.logKey] && c.feeling && c.feelingWhy && String(c.feelingWhy).trim())
+              : (c[s.logKey] !== undefined && c[s.logKey] !== null);
+            li.classList.toggle("done", stateArr[i]);
+            onChange();
+          }
+          const row = document.createElement("div");
+          row.className = "mini-scale";
+          for (let v = 1; v <= 10; v++) {
+            const b = document.createElement("button");
+            b.textContent = v;
+            b.dataset.v = v;
+            b.addEventListener("click", ev => {
+              ev.stopPropagation();
+              const cur = (logGet()[today] || {})[s.logKey];
+              if (cur === v) {
+                logMerge({ [s.logKey]: null });
+                paintScale(row, null);
+              } else {
+                logMerge({ [s.logKey]: v });
+                paintScale(row, v);
+              }
+              refreshMoodDone();
+            });
+            row.appendChild(b);
+          }
+          body.appendChild(row);
+          const cur = (logGet()[today] || {})[s.logKey];
+          if (cur) paintScale(row, cur);
+          if (s.feelings) {
+            const frow = document.createElement("div");
+            frow.className = "mini-scale feel-row";
+            FEELINGS.forEach(f => {
+              const b = document.createElement("button");
+              b.textContent = f.label;
+              b.dataset.v = f.k;
+              b.className = "feel-btn " + f.cls;
+              b.addEventListener("click", ev => {
+                ev.stopPropagation();
+                const c = (logGet()[today] || {}).feeling;
+                logMerge({ feeling: c === f.k ? null : f.k });
+                paintScale(frow, c === f.k ? null : f.k);
+                refreshMoodDone();
+              });
+              frow.appendChild(b);
+            });
+            const why = document.createElement("input");
+            why.type = "text";
+            why.className = "mit-reason";
+            why.placeholder = "Why do you feel this way?";
+            why.addEventListener("click", ev => ev.stopPropagation());
+            why.addEventListener("input", () => { logMerge({ feelingWhy: why.value || null }); refreshMoodDone(); });
+            body.appendChild(frow);
+            body.appendChild(why);
+            const c = logGet()[today] || {};
+            if (c.feeling) paintScale(frow, c.feeling);
+            if (c.feelingWhy) why.value = c.feelingWhy;
+          }
+          // recompute done-state from the actual data (covers restores and the all-three rule)
+          {
+            const c = logGet()[today] || {};
+            stateArr[i] = s.feelings
+              ? !!(c[s.logKey] && c.feeling && c.feelingWhy && String(c.feelingWhy).trim())
+              : ((c[s.logKey] !== undefined && c[s.logKey] !== null) || stateArr[i]);
+            li.classList.toggle("done", stateArr[i]);
+          }
+        } else if (s.kind === "sleep") {
+          const wrap = document.createElement("div");
+          const score = document.createElement("input");
+          score.type = "number";
+          score.min = 0; score.max = 100;
+          score.inputMode = "numeric";
+          score.className = "sleep-score-input";
+          score.placeholder = "Score %";
+          score.addEventListener("click", ev => ev.stopPropagation());
+          const rrow = document.createElement("div");
+          rrow.className = "mini-scale sleep-rate-row";
+          const RATINGS = ["Very Low", "Low", "OK", "High", "Very High"];
+          function sleepDone() {
+            const e = logGet()[today] || {};
+            // done only when BOTH the score and the subjective rating are in (or the watch had no data)
+            stateArr[i] = ((e.sleepScore !== undefined && e.sleepScore !== null) && !!e.sleepRating) || !!e.sleepNoData;
+            li.classList.toggle("done", stateArr[i]);
+            onChange();
+          }
+          const noData = document.createElement("button");
+          noData.className = "sleep-nodata-btn";
+          noData.textContent = "watch had no data";
+          function paintNoData() { noData.classList.toggle("on", !!(logGet()[today] || {}).sleepNoData); }
+          noData.addEventListener("click", ev => {
+            ev.stopPropagation();
+            const cur = !!(logGet()[today] || {}).sleepNoData;
+            logMerge({ sleepNoData: cur ? null : true });
+            paintNoData();
+            sleepDone();
+          });
+          score.addEventListener("input", () => {
+            let v = parseInt(score.value, 10);
+            if (isNaN(v)) v = null; else v = Math.max(0, Math.min(100, v));
+            logMerge({ sleepScore: v });
+            if (v !== null) { logMerge({ sleepNoData: null }); paintNoData(); }
+            sleepDone();
+          });
+          RATINGS.forEach(rt => {
+            const b = document.createElement("button");
+            b.textContent = rt;
+            b.dataset.v = rt;
+            b.className = "mit-btn";
+            b.addEventListener("click", ev => {
+              ev.stopPropagation();
+              const cur = (logGet()[today] || {}).sleepRating;
+              logMerge({ sleepRating: cur === rt ? null : rt });
+              paintScale(rrow, cur === rt ? null : rt);
+              sleepDone();
+            });
+            rrow.appendChild(b);
+          });
+          const noteBtn = document.createElement("button");
+          noteBtn.className = "sleep-note-btn";
+          noteBtn.setAttribute("aria-label", "Add a sleep note");
+          noteBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none">' +
+            '<path d="M20.2 14.2A8.6 8.6 0 0 1 9.8 3.8 8.6 8.6 0 1 0 20.2 14.2Z" fill="currentColor"/>' +
+            '<circle cx="17.5" cy="5.5" r="1" fill="currentColor" opacity=".7"/>' +
+            '<circle cx="20.5" cy="9" r=".7" fill="currentColor" opacity=".5"/></svg>';
+          const noteInp = document.createElement("input");
+          noteInp.type = "text";
+          noteInp.className = "mit-reason";
+          noteInp.placeholder = "Sleep note — woke at 4am, dreams, late caffeine…";
+          noteInp.hidden = true;
+          noteBtn.addEventListener("click", ev => {
+            ev.stopPropagation();
+            noteInp.hidden = !noteInp.hidden;
+            if (!noteInp.hidden) noteInp.focus();
+          });
+          noteInp.addEventListener("click", ev => ev.stopPropagation());
+          noteInp.addEventListener("input", () => logMerge({ sleepNote: noteInp.value || null }));
+          wrap.appendChild(score);
+          wrap.appendChild(rrow);
+          wrap.appendChild(noteBtn);
+          wrap.appendChild(noData);
+          wrap.appendChild(noteInp);
+          body.appendChild(wrap);
+          const cur = logGet()[today] || {};
+          if (cur.sleepScore !== undefined && cur.sleepScore !== null) score.value = cur.sleepScore;
+          if (cur.sleepRating) paintScale(rrow, cur.sleepRating);
+          if (cur.sleepNote) { noteInp.value = cur.sleepNote; noteInp.hidden = false; }
+          paintNoData();
+          // done-state always derived from the saved data, not the visible tick history
+          stateArr[i] = ((cur.sleepScore !== undefined && cur.sleepScore !== null) && !!cur.sleepRating) || !!cur.sleepNoData;
+          li.classList.toggle("done", stateArr[i]);
+        } else if (s.kind === "mit") {
+          // show the morning's typed MIT so the reckoning is concrete
+          const mitShow = document.createElement("div");
+          mitShow.className = "mit-display";
+          mitShow.id = "mitDisplay";
+          body.appendChild(mitShow);
+          const row = document.createElement("div");
+          row.className = "mini-scale mit-row";
+          const reason = document.createElement("input");
+          reason.type = "text";
+          reason.className = "mit-reason";
+          reason.placeholder = "Why not? One honest line…";
+          reason.hidden = true;
+          reason.addEventListener("click", ev => ev.stopPropagation());
+          reason.addEventListener("input", () => logMerge({ mitReason: reason.value || null }));
+          [["yes", "Yes"], ["no", "Not today"]].forEach(([val, txt]) => {
+            const b = document.createElement("button");
+            b.textContent = txt;
+            b.dataset.v = val;
+            b.className = "mit-btn";
+            b.addEventListener("click", ev => {
+              ev.stopPropagation();
+              const cur = (logGet()[today] || {})[s.logKey];
+              const bool = val === "yes";
+              if (cur === bool && stateArr[i]) {
+                stateArr[i] = false;
+                logMerge({ [s.logKey]: null, mitReason: null });
+                paintScale(row, null);
+                reason.hidden = true;
+              } else {
+                stateArr[i] = true;
+                logMerge({ [s.logKey]: bool });
+                if (bool) logMerge({ mitReason: null });
+                paintScale(row, val);
+                reason.hidden = bool;
+                if (!bool) reason.focus();
+              }
+              li.classList.toggle("done", stateArr[i]);
+              onChange();
+            });
+            row.appendChild(b);
+          });
+          body.appendChild(row);
+          body.appendChild(reason);
+          // restore from the log unconditionally — the saved answer is the truth,
+          // even if the visible tick-state was reset (e.g. after an app update)
+          const cur = (logGet()[today] || {})[s.logKey];
+          if (cur !== undefined && cur !== null) {
+            if (!stateArr[i]) { stateArr[i] = true; li.classList.add("done"); }
+            paintScale(row, cur ? "yes" : "no");
+            if (cur === false) {
+              reason.hidden = false;
+              reason.value = (logGet()[today] || {}).mitReason || "";
+            }
+          }
+        } else {
+          li.addEventListener("click", () => {
+            stateArr[i] = !stateArr[i];
+            li.classList.toggle("done", stateArr[i]);
+            stampHabitTime(stateArr[i]);
+            onChange();
+          });
+          if (s.input) {
+            const inp = document.createElement(s.input.multiline ? "textarea" : "input");
+            if (!s.input.multiline) inp.type = "text";
+            else inp.rows = 3;
+            inp.className = "step-input";
+            inp.placeholder = s.input.placeholder || "";
+            inp.addEventListener("click", ev => ev.stopPropagation());
+            inp.addEventListener("input", () => logMerge({ [s.input.key]: inp.value || null }));
+            body.appendChild(inp);
+            const cur = (logGet()[today] || {})[s.input.key];
+            if (cur) inp.value = cur;
+          }
+          if (s.stepsInput) {
+            const st = document.createElement("input");
+            st.type = "number";
+            st.min = 0;
+            st.inputMode = "numeric";
+            st.className = "sleep-score-input";
+            st.placeholder = "Steps today";
+            st.style.width = "130px";
+            st.addEventListener("click", ev => ev.stopPropagation());
+            st.addEventListener("input", () => {
+              let v = parseInt(st.value, 10);
+              if (isNaN(v) || v < 0) v = null;
+              logMerge({ steps: v });
+            });
+            body.appendChild(st);
+            const curSteps = (logGet()[today] || {}).steps;
+            if (curSteps !== undefined && curSteps !== null) st.value = curSteps;
+          }
+        }
+        ol.appendChild(li);
+        built.push(li);
+      });
+      rootEl.appendChild(ol);
+    });
+    return built;
+  }
+
+  const items = buildStepList(PHASES, root, state, () => { persist(); render(); }, { timesKey: "habitTimes" });
+
+  // invisible per-date log (for export): merge fields so morning, evening and mood coexist
+  const DOW_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  function logMergeDate(date, fields) {
+    try {
+      const log = JSON.parse(store.get("ritual-log") || "{}") || {};
+      const d = new Date(date + "T00:00:00");
+      const extra = {
+        updated: new Date().toISOString(),
+        dayOfWeek: DOW_NAMES[d.getDay()],
+        isWeekend: d.getDay() === 0 || d.getDay() === 6
+      };
+      // backfilled entries are honestly stamped, and backfilling un-marks "not logged"
+      if (BACKFILL && date === today) {
+        extra.backfilled = true;
+        extra.backfilledAt = new Date().toISOString();
+        extra.notLogged = null;
+      }
+      log[date] = Object.assign(log[date] || {}, fields, extra);
+      store.set("ritual-log", JSON.stringify(log));
+    } catch (e) {}
+  }
+  function logMerge(fields) { logMergeDate(today, fields); }
+  function logGet() {
+    try { return JSON.parse(store.get("ritual-log") || "{}") || {}; } catch (e) { return {}; }
+  }
+
+  function persist() {
+    if (!BACKFILL) store.set("ritual-state", JSON.stringify({ date: today, checks: state }));
+    const complete = unitsDone() === TOTAL_UNITS;
+    const coreDone = state.filter((c, i) => c && IS_CHOICE[i]).length;
+    const optDone = state.filter((c, i) => c && IS_OPTIONAL[i] && !allSteps[i].noExceed).length;
+    logMerge({
+      habits: allSteps.filter((s, i) => state[i]).map(s => s.t),
+      complete: complete,
+      exceeded: complete && (coreDone > 1 || optDone > 0)
+    });
+  }
+
+  // completed-day history for the calendar
+  let history = [];
+  try {
+    const h = JSON.parse(store.get("ritual-history") || "null");
+    if (Array.isArray(h)) history = h.filter(x => typeof x === "string");
+  } catch (e) {}
+  const historySet = new Set(history);
+
+  function recordCompletion() {
+    if (!historySet.has(today)) {
+      historySet.add(today);
+      history.push(today);
+      store.set("ritual-history", JSON.stringify(history));
+      if (typeof renderCalendar === "function") renderCalendar();
+    }
+  }
+
+  // progress units: the "choice" trio (meditate / read / pages) counts as ONE unit,
+  // fulfilled as soon as any of the three is ticked; "optional" steps never count
+  // toward the percentage; every other step is its own unit.
+  const IS_CHOICE = allSteps.map(s => s.g === "choice");
+  const IS_OPTIONAL = allSteps.map(s => s.g === "optional");
+  const N_CHOICE = IS_CHOICE.filter(Boolean).length;
+  const N_OPTIONAL = IS_OPTIONAL.filter(Boolean).length;
+  const TOTAL_UNITS = allSteps.length - N_CHOICE + (N_CHOICE ? 1 : 0) - N_OPTIONAL;
+
+  function unitsDone() {
+    let d = 0, choiceAny = false;
+    state.forEach((c, i) => {
+      if (IS_OPTIONAL[i]) return;
+      if (IS_CHOICE[i]) { if (c) choiceAny = true; }
+      else if (c) d++;
+    });
+    return d + (choiceAny ? 1 : 0);
+  }
+
+  function render() {
+    const done = unitsDone();
+    const pct = Math.round(done / TOTAL_UNITS * 100);
+    document.getElementById("pct").textContent = pct + "%";
+    document.getElementById("ringFill").style.strokeDashoffset = CIRC * (1 - done / TOTAL_UNITS);
+    const label = document.getElementById("progLabel");
+    const sub = document.getElementById("progSub");
+    if (done === 0) { label.textContent = "The morning is yours"; sub.textContent = TOTAL_UNITS + " parts · tap steps as you go"; }
+    else if (done === TOTAL_UNITS) {
+      label.textContent = "Ritual complete"; sub.textContent = "That's a well-begun day.";
+      recordCompletion();
+    }
+    else { label.textContent = done + " of " + TOTAL_UNITS + " done"; sub.textContent = "No rushing — the pace is the point."; }
+    document.getElementById("celebrate").classList.toggle("show", done === TOTAL_UNITS);
+  }
+
+  render();
+
+  // ---- evening ritual ----
+  const eveRoot = document.getElementById("eveStepsRoot");
+  const eveSteps = EPHASES.flatMap(p => p.steps);
+  let eveState = new Array(eveSteps.length).fill(false);
+  let eveRestored = false;
+  try {
+    const saved = JSON.parse(store.get("ritual-evening-state") || "null");
+    if (saved && saved.date === today && Array.isArray(saved.checks) && saved.checks.length === eveSteps.length) {
+      eveState = saved.checks.map(Boolean);
+      eveRestored = true;
+    }
+  } catch (e) {}
+  if (!eveRestored) {
+    try {
+      const e = logGet()[today];
+      if (e && Array.isArray(e.eveningHabits) && e.eveningHabits.length) eveState = eveSteps.map(s => e.eveningHabits.indexOf(s.t) >= 0);
+    } catch (e) {}
+  }
+
+  let eveHistory = [];
+  try {
+    const h = JSON.parse(store.get("ritual-evening-history") || "null");
+    if (Array.isArray(h)) eveHistory = h.filter(x => typeof x === "string");
+  } catch (e) {}
+  const eveHistorySet = new Set(eveHistory);
+
+  const EVE_OPTIONAL = eveSteps.map(s => s.g === "optional");
+  const eveItems = buildStepList(EPHASES, eveRoot, eveState, () => { persistEve(); renderEve(); }, { timesKey: "eveningHabitTimes" });
+
+  function eveComplete() {
+    return eveState.every((c, i) => c || EVE_OPTIONAL[i]);
+  }
+
+  function persistEve() {
+    if (!BACKFILL) store.set("ritual-evening-state", JSON.stringify({ date: today, checks: eveState }));
+    logMerge({
+      eveningHabits: eveSteps.filter((s, i) => eveState[i]).map(s => s.t),
+      eveningComplete: eveComplete()
+    });
+  }
+
+  function refreshMitDisplay() {
+    const el = document.getElementById("mitDisplay");
+    if (!el) return;
+    const mit = (logGet()[today] || {}).mit;
+    if (mit) {
+      el.innerHTML = "<b>Today's MIT</b>";
+      const q = document.createElement("span");
+      q.textContent = "“" + mit + "”";
+      el.appendChild(q);
+      el.hidden = false;
+    } else {
+      el.hidden = true;
+    }
+  }
+  refreshMitDisplay();
+
+  function renderEve() {
+    const done = eveComplete();
+    document.getElementById("celebrateEve").classList.toggle("show", done);
+    if (done && !eveHistorySet.has(today)) {
+      eveHistorySet.add(today);
+      eveHistory.push(today);
+      store.set("ritual-evening-history", JSON.stringify(eveHistory));
+    }
+  }
+  renderEve();
+
+  // ---- Ritual calendar (marks days the ritual hit 100%) ----
+  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  let viewDate = new Date();
+  viewDate.setDate(1);
+  let selectedDate = null;
+
+  function renderCalendar() {
+    const dayLog = logGet();
+    const y = viewDate.getFullYear(), m = viewDate.getMonth();
+    document.getElementById("calTitle").textContent = MONTHS[m] + " " + y;
+    const grid = document.getElementById("calGrid");
+    grid.innerHTML = "";
+    const firstDow = (new Date(y, m, 1).getDay() + 6) % 7; // Monday-first
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+    for (let i = 0; i < firstDow; i++) grid.appendChild(document.createElement("div"));
+    for (let d = 1; d <= daysInMonth; d++) {
+      const cell = document.createElement("div");
+      cell.className = "cal-day";
+      cell.textContent = d;
+      const key = dateKey(new Date(y, m, d));
+      const e = dayLog[key];
+      let cls = null;
+      if (graceSet.has(key)) cls = graceMap[key] === "travel" ? "violet" : "blue";
+      else if (e && e.complete && e.exceeded) cls = "gold-day";
+      else if (e && e.complete) cls = "green";
+      else if (historySet.has(key)) cls = "green"; // legacy entries without a log
+      else if (e && (e.habits || []).length) cls = "lightgreen";
+      if (cls) cell.classList.add(cls);
+      // mood star: avg of morning+evening mood — 8+ mustard, 6–7.9 normal, below 6 none
+      if (e && e.notLogged) cell.classList.add("nolog");
+      if (key === realToday) cell.classList.add("today");
+      const moodVals = [e && e.mood, e && e.eveningMood].filter(Boolean);
+      if (moodVals.length) {
+        const avg = moodVals.reduce((a, b) => a + b, 0) / moodVals.length;
+        if (avg >= 6) {
+          const star = document.createElement("span");
+          star.className = "cal-star" + (avg >= 8 ? " bright" : "");
+          star.textContent = "★";
+          cell.appendChild(star);
+        }
+      }
+      if (key === selectedDate) cell.classList.add("selected");
+      cell.addEventListener("click", () => {
+        selectedDate = (selectedDate === key) ? null : key;
+        renderCalendar();
+        renderDayDetails();
+      });
+      grid.appendChild(cell);
+    }
+    const n = historySet.size;
+    document.getElementById("calTotal").textContent = n + (n === 1 ? " morning all-time" : " mornings all-time");
+  }
+  document.getElementById("calPrev").addEventListener("click", () => { viewDate.setMonth(viewDate.getMonth() - 1); renderCalendar(); renderSleep(); renderMood(); renderExercise(); });
+  document.getElementById("calNext").addEventListener("click", () => { viewDate.setMonth(viewDate.getMonth() + 1); renderCalendar(); renderSleep(); renderMood(); renderExercise(); });
+  renderCalendar();
+
+  // ---- day details: backlog sick/travel for ANY date + per-date body notes ----
+  function toggleGrace(day, type) {
+    if (graceMap[day] === type || type === null) { delete graceMap[day]; graceSet.delete(day); }
+    else { graceMap[day] = type; graceSet.add(day); }
+    store.set("ritual-grace2", JSON.stringify(graceMap));
+    renderCalendar();
+    renderDayDetails();
+  }
+
+  function daySummary(key) {
+    const e = logGet()[key];
+    const parts = [];
+    if (e && e.notLogged) parts.push("<b>Marked as not logged</b> — excluded from analysis");
+    if (e && e.backfilled) parts.push("(backfilled)");
+    if (!e || (!(e.habits || []).length && !(e.eveningHabits || []).length && !e.mood && !e.eveningMood)) {
+      parts.push("No ritual data recorded for this day.");
+      return parts.join(" · ");
+    }
+    if (e.complete && e.exceeded) parts.push("Morning <b>beyond the minimum</b>");
+    else if (e.complete) parts.push("Morning <b>complete</b>");
+    else if ((e.habits || []).length) parts.push("Morning <b>partial</b> (" + e.habits.length + " steps)");
+    else parts.push("Morning —");
+    parts.push("Evening " + (e.eveningComplete ? "<b>done</b>" : (e.eveningHabits || []).length ? "<b>partial</b>" : "—"));
+    if (e.sleepScore !== undefined && e.sleepScore !== null || e.sleepRating) {
+      parts.push("Sleep " + (e.sleepScore !== undefined && e.sleepScore !== null ? "<b>" + e.sleepScore + "%</b>" : "") + (e.sleepRating ? " · " + e.sleepRating : ""));
+    }
+    if (e.mood || e.eveningMood) parts.push("Mood " + (e.mood || "–") + " → " + (e.eveningMood || "–"));
+    if (e.feeling && FEEL_BY_KEY[e.feeling]) parts.push("Feeling: <b>" + FEEL_BY_KEY[e.feeling].label + "</b>" + (e.feelingWhy ? " — " + e.feelingWhy : ""));
+    if (e.mit) parts.push("MIT: “" + e.mit + "”" + (e.mitDone === true ? " — accomplished" : e.mitDone === false ? " — not accomplished" : ""));
+    return parts.join(" · ");
+  }
+
+  function renderDayDetails() {
+    const label = document.getElementById("ddLabel");
+    const card = document.getElementById("ddCard");
+    if (!selectedDate) { label.hidden = true; card.hidden = true; return; }
+    label.hidden = false;
+    card.hidden = false;
+    document.getElementById("ddDate").textContent =
+      new Date(selectedDate + "T00:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    document.getElementById("ddSummary").innerHTML = daySummary(selectedDate);
+    document.getElementById("ddSick").classList.toggle("on", graceMap[selectedDate] === "sick");
+    document.getElementById("ddTravel").classList.toggle("on", graceMap[selectedDate] === "travel");
+    document.getElementById("ddNoLog").classList.toggle("on", !!(logGet()[selectedDate] || {}).notLogged);
+    // backfill entry: only yesterday and the day before (the 48-hour memory window)
+    document.getElementById("ddEditRow").hidden = !(selectedDate === yesterday || selectedDate === dayBefore);
+    const chips = document.getElementById("ddChips");
+    chips.innerHTML = "";
+    const notes = (logGet()[selectedDate] || {}).bodyNotes || [];
+    notes.forEach((n, i) => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      const txt = document.createElement("span");
+      txt.textContent = n;
+      const rm = document.createElement("button");
+      rm.textContent = "✕";
+      rm.setAttribute("aria-label", "Remove note");
+      rm.addEventListener("click", () => {
+        const e2 = logGet()[selectedDate] || {};
+        const cur = (e2.bodyNotes || []).slice();
+        const times = (e2.bodyNoteTimes || []).slice();
+        cur.splice(i, 1);
+        if (i < times.length) times.splice(i, 1);
+        logMergeDate(selectedDate, { bodyNotes: cur, bodyNoteTimes: times });
+        renderDayDetails();
+      });
+      chip.appendChild(txt);
+      chip.appendChild(rm);
+      chips.appendChild(chip);
+    });
+  }
+
+  document.getElementById("ddClose").addEventListener("click", () => { selectedDate = null; renderCalendar(); renderDayDetails(); });
+  document.getElementById("ddSick").addEventListener("click", () => toggleGrace(selectedDate, "sick"));
+  document.getElementById("ddTravel").addEventListener("click", () => toggleGrace(selectedDate, "travel"));
+  document.getElementById("ddNoLog").addEventListener("click", () => {
+    if (!selectedDate) return;
+    const cur = !!(logGet()[selectedDate] || {}).notLogged;
+    logMergeDate(selectedDate, { notLogged: cur ? null : true });
+    renderCalendar();
+    renderDayDetails();
+  });
+  document.getElementById("ddClear").addEventListener("click", () => {
+    toggleGrace(selectedDate, null);
+    if (selectedDate && (logGet()[selectedDate] || {}).notLogged) {
+      logMergeDate(selectedDate, { notLogged: null });
+      renderCalendar();
+      renderDayDetails();
+    }
+  });
+  document.getElementById("ddNoteAdd").addEventListener("click", () => {
+    const inp = document.getElementById("ddNoteInput");
+    const v = inp.value.trim();
+    if (!v || !selectedDate) return;
+    const e = logGet()[selectedDate] || {};
+    const cur = (e.bodyNotes || []).slice();
+    const times = (e.bodyNoteTimes || []).slice();
+    cur.push(v);
+    times.push(new Date().toISOString()); // invisible timestamp for future analysis
+    logMergeDate(selectedDate, { bodyNotes: cur, bodyNoteTimes: times });
+    inp.value = "";
+    renderDayDetails();
+  });
+  document.getElementById("ddNoteInput").addEventListener("keydown", e => {
+    if (e.key === "Enter") document.getElementById("ddNoteAdd").click();
+  });
+  document.getElementById("ddEdit").addEventListener("click", () => {
+    if (!selectedDate) return;
+    try { localStorage.setItem("ritual-backfill", JSON.stringify({ date: selectedDate, setAt: new Date().toISOString() })); } catch (e) {}
+    location.reload();
+  });
+
+  // ---- sleep & mood calendars: same month grid as the ritual calendar ----
+  const RATE_STEP = { "Very Low": 1, "Low": 2, "OK": 3, "High": 4, "Very High": 5 };
+  const RATE_VAL = { "Very Low": 10, "Low": 30, "OK": 55, "High": 75, "Very High": 92 };
+
+  function buildMonthGrid(gridEl, titleEl, colorFor) {
+    const log = logGet();
+    gridEl.innerHTML = "";
+    const y = viewDate.getFullYear(), m = viewDate.getMonth();
+    titleEl.textContent = MONTHS[m] + " " + y;
+    const firstDow = (new Date(y, m, 1).getDay() + 6) % 7;
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+    let any = false;
+    for (let i = 0; i < firstDow; i++) gridEl.appendChild(document.createElement("div"));
+    for (let d = 1; d <= daysInMonth; d++) {
+      const key = dateKey(new Date(y, m, d));
+      const cell = document.createElement("div");
+      cell.className = "cal-day";
+      cell.textContent = d;
+      const res = colorFor(log[key] || {}, key);
+      if (res) {
+        any = true;
+        cell.classList.add(res.cls);
+        if (res.title) cell.title = res.title;
+      }
+      if (key === realToday) cell.classList.add("today");
+      cell.addEventListener("click", () => {
+        selectedDate = (selectedDate === key) ? null : key;
+        renderCalendar();
+        renderDayDetails();
+        renderSleep();
+        renderMood();
+      });
+      gridEl.appendChild(cell);
+    }
+    return any;
+  }
+
+  function renderSleep() {
+    const any = buildMonthGrid(
+      document.getElementById("sleepCal"),
+      document.getElementById("sleepCalTitle"),
+      (e, key) => {
+        const score = (e.sleepScore !== undefined && e.sleepScore !== null) ? e.sleepScore
+          : (e.sleepRating ? RATE_VAL[e.sleepRating] : null);
+        if (score === null) return null;
+        const step = e.sleepRating ? RATE_STEP[e.sleepRating]
+          : (score < 20 ? 1 : score < 40 ? 2 : score < 60 ? 3 : score < 80 ? 4 : 5);
+        return {
+          cls: "sq" + step,
+          title: key + (e.sleepScore !== undefined && e.sleepScore !== null ? " · " + e.sleepScore + "%" : "") +
+            (e.sleepRating ? " · " + e.sleepRating : "") + (e.sleepNote ? " · " + e.sleepNote : "")
+        };
+      }
+    );
+    document.getElementById("sleepEmpty").hidden = any;
+  }
+  renderSleep();
+
+  function renderMood() {
+    const any = buildMonthGrid(
+      document.getElementById("moodCal"),
+      document.getElementById("moodCalTitle"),
+      (e, key) => {
+        if (!e.feeling || !FEEL_BY_KEY[e.feeling]) return null;
+        const f = FEEL_BY_KEY[e.feeling];
+        return {
+          cls: "day-" + f.cls,
+          title: key + " · " + f.label + (e.feelingWhy ? " — " + e.feelingWhy : "")
+        };
+      }
+    );
+    document.getElementById("moodEmpty").hidden = any;
+  }
+  renderMood();
+
+  // ---- exercise calendar: big ★ for a logged activity, big ✓ for >5,000 steps ----
+  function renderExercise() {
+    const log = logGet();
+    const grid = document.getElementById("exCal");
+    grid.innerHTML = "";
+    const y = viewDate.getFullYear(), m = viewDate.getMonth();
+    document.getElementById("exCalTitle").textContent = MONTHS[m] + " " + y;
+    const firstDow = (new Date(y, m, 1).getDay() + 6) % 7;
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+    let any = false;
+    for (let i = 0; i < firstDow; i++) grid.appendChild(document.createElement("div"));
+    for (let d = 1; d <= daysInMonth; d++) {
+      const key = dateKey(new Date(y, m, d));
+      const e = log[key] || {};
+      const hasAct = !!(e.moveActivity && String(e.moveActivity).trim());
+      const hasSteps = (e.steps !== undefined && e.steps !== null && e.steps > 5000);
+      const cell = document.createElement("div");
+      cell.className = "cal-day ex-day";
+      const num = document.createElement("span");
+      num.className = "ex-num";
+      num.textContent = d;
+      cell.appendChild(num);
+      if (hasAct || hasSteps) {
+        any = true;
+        const g = document.createElement("span");
+        g.className = "ex-glyph";
+        g.innerHTML = (hasAct ? '<span class="ex-star">★</span>' : "") + (hasSteps ? '<span class="ex-chk">✓</span>' : "");
+        cell.appendChild(g);
+        cell.title = key + (hasAct ? " · " + e.moveActivity : "") + (hasSteps ? " · " + e.steps + " steps" : "");
+      }
+      if (key === realToday) cell.classList.add("today");
+      cell.addEventListener("click", () => {
+        selectedDate = (selectedDate === key) ? null : key;
+        renderCalendar();
+        renderDayDetails();
+        renderSleep();
+        renderMood();
+        renderExercise();
+      });
+      grid.appendChild(cell);
+    }
+    document.getElementById("exEmpty").hidden = any;
+  }
+  renderExercise();
+
+  // ---- sync-health warning: only appears after 48h of failed/absent syncing ----
+  function renderSyncWarn() {
+    const el = document.getElementById("syncWarn");
+    try {
+      const cfg = syncCfg();
+      const meta = syncMeta();
+      const stale = cfg && meta.lastSync && (Date.now() - new Date(meta.lastSync).getTime() > 48 * 3600e3);
+      if (stale) {
+        el.innerHTML = "⚠ Sync hasn't succeeded since <b>" +
+          new Date(meta.lastSync).toLocaleDateString("en-GB", { day: "numeric", month: "long" }) +
+          "</b> — open the Sync section below and try \"Sync now\".";
+        el.hidden = false;
+      } else {
+        el.hidden = true;
+      }
+    } catch (e) { el.hidden = true; }
+  }
+
+  // ---- collapsible sections (open/closed state remembered) ----
+  const COLLAPSE_DEFAULT_OPEN = { ritual: true, sleep: true, mood: true, exercise: true, patterns: false, export: false, sync: false, photo: false };
+  let collapseState = {};
+  try { collapseState = JSON.parse(store.get("ritual-collapse") || "{}") || {}; } catch (e) {}
+  document.querySelectorAll(".collapser").forEach(h => {
+    const k = h.dataset.sec;
+    const content = h.nextElementSibling;
+    if (!content) return;
+    function isOpen() { return (collapseState[k] === undefined) ? !!COLLAPSE_DEFAULT_OPEN[k] : !!collapseState[k]; }
+    function apply() {
+      content.hidden = !isOpen();
+      const f = h.querySelector(".fold");
+      if (f) f.textContent = isOpen() ? "▾" : "▸";
+    }
+    h.addEventListener("click", () => {
+      collapseState[k] = !isOpen();
+      store.set("ritual-collapse", JSON.stringify(collapseState));
+      apply();
+    });
+    apply();
+  });
+
+  // ---- weekly patterns & long-term trends ----
+  function renderWeek() {
+    const log = logGet();
+    const CORE = ["Meditate with movement", "Read something that matters", "Morning pages"];
+    const tally7 = {}, tallyAll = {};
+    const moodRecent = [], moodPrior = [];
+
+    Object.keys(log).forEach(d => {
+      const e = log[d];
+      CORE.forEach(c => { if ((e.habits || []).indexOf(c) >= 0) tallyAll[c] = (tallyAll[c] || 0) + 1; });
+    });
+    for (let i = 0; i < 28; i++) {
+      const d = dateKey(new Date(ritualNow().getTime() - i * 864e5));
+      const e = log[d];
+      if (!e) continue;
+      if (i < 7) {
+        CORE.forEach(c => { if ((e.habits || []).indexOf(c) >= 0) tally7[c] = (tally7[c] || 0) + 1; });
+        if (e.mood) moodRecent.push(e.mood);
+      } else if (e.mood) moodPrior.push(e.mood);
+    }
+
+    const topOf = t => Object.keys(t).sort((a, b) => t[b] - t[a])[0];
+    const top7 = topOf(tally7), topAll = topOf(tallyAll);
+    const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+    const a7 = avg(moodRecent), aPrior = avg(moodPrior);
+
+    const lines = [];
+    if (top7) lines.push("Most-chosen practice this week: <b>" + top7 + "</b> (" + tally7[top7] + "×).");
+    if (topAll && topAll !== top7) lines.push("Long-term favourite: <b>" + topAll + "</b> (" + tallyAll[topAll] + "× all-time).");
+    else if (topAll && topAll === top7 && tallyAll[topAll] > (tally7[top7] || 0)) lines.push("Also your long-term favourite (" + tallyAll[topAll] + "× all-time).");
+    if (a7 !== null && aPrior !== null) {
+      const diff = a7 - aPrior;
+      const dir = diff > 0.4 ? "trending up" : diff < -0.4 ? "trending down" : "steady";
+      lines.push("Morning mood: <b>" + dir + "</b> (avg " + a7.toFixed(1) + " this week vs " + aPrior.toFixed(1) + " before).");
+    } else if (a7 !== null) {
+      lines.push("Average morning mood this week: <b>" + a7.toFixed(1) + "</b> — trends appear after a few weeks.");
+    }
+
+    const el = document.getElementById("weekCard");
+    if (!lines.length) { el.textContent = "No data yet — patterns appear after a few mornings."; return; }
+    el.innerHTML = "<strong>Patterns</strong>" + lines.join("<br>");
+  }
+  renderWeek();
+
+  // ---- Assimil lesson tracker (1–100, cumulative, separate from the daily %) ----
+  const N_LESSONS = 100;
+  let lessons = new Array(N_LESSONS).fill(false);
+  try {
+    const saved = JSON.parse(store.get("ritual-assimil") || "null");
+    if (Array.isArray(saved) && saved.length === N_LESSONS) lessons = saved.map(Boolean);
+  } catch (e) {}
+
+  const grid = document.getElementById("assimilGrid");
+  const cells = [];
+  for (let i = 0; i < N_LESSONS; i++) {
+    const cell = document.createElement("div");
+    cell.className = "lesson";
+    cell.textContent = i + 1;
+    cell.addEventListener("click", () => {
+      lessons[i] = !lessons[i];
+      store.set("ritual-assimil", JSON.stringify(lessons));
+      // invisible log: date each lesson was completed (for export)
+      try {
+        const llog = JSON.parse(store.get("ritual-assimil-log") || "{}") || {};
+        if (lessons[i]) llog[i + 1] = today; else delete llog[i + 1];
+        store.set("ritual-assimil-log", JSON.stringify(llog));
+      } catch (e) {}
+      renderLessons();
+    });
+    grid.appendChild(cell);
+    cells.push(cell);
+  }
+
+  function renderForecast() {
+    const el = document.getElementById("assimilForecast");
+    try {
+      const llog = JSON.parse(store.get("ritual-assimil-log") || "{}") || {};
+      const ds = Object.values(llog).sort();
+      const n = ds.length;
+      const rem = N_LESSONS - lessons.filter(Boolean).length;
+      if (n >= 3 && rem > 0) {
+        const first = new Date(ds[0] + "T00:00:00");
+        const days = Math.max(1, (Date.now() - first.getTime()) / 864e5);
+        const pace = n / days;
+        const finish = new Date(Date.now() + (rem / pace) * 864e5);
+        el.innerHTML = "At your current pace, you'll finish around <b>" +
+          finish.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) + "</b>.";
+        el.hidden = false;
+      } else el.hidden = true;
+    } catch (e) { el.hidden = true; }
+  }
+
+  function renderLessons() {
+    const done = lessons.filter(Boolean).length;
+    const next = lessons.indexOf(false);
+    cells.forEach((cell, i) => {
+      cell.classList.toggle("done", lessons[i]);
+      cell.classList.toggle("next", i === next);
+    });
+    const count = document.getElementById("assimilCount");
+    count.textContent = done + " of " + N_LESSONS + " lessons";
+    if (done === N_LESSONS) count.textContent = "100 of 100 — Assimil complete 🎉";
+    renderForecast();
+  }
+  renderLessons();
+
+  // ---- tabs ----
+  const views = {
+    morning: document.getElementById("viewRitual"),
+    evening: document.getElementById("viewEvening"),
+    calendar: document.getElementById("viewCalendar")
+  };
+  const tabs = {
+    morning: document.getElementById("tabRitual"),
+    evening: document.getElementById("tabEvening"),
+    calendar: document.getElementById("tabCalendar")
+  };
+  function showTab(name) {
+    Object.keys(views).forEach(k => {
+      views[k].hidden = k !== name;
+      tabs[k].classList.toggle("active", k === name);
+    });
+    document.body.classList.toggle("evening-mode", name === "evening");
+    document.body.classList.toggle("morning-mode", name === "morning");
+    if (name === "evening") refreshMitDisplay();
+    if (name === "calendar") { renderCalendar(); renderWeek(); renderSleep(); renderMood(); renderExercise(); renderSyncWarn(); }
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+  Object.keys(tabs).forEach(k => tabs[k].addEventListener("click", () => showTab(k)));
+
+  // ---- data export (everything the app has ever logged) ----
+  function download(content, filename, type) {
+    const blob = new Blob([content], { type: type });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  // on iPhone/iPad this opens the native share sheet (Google Drive, Mail,
+  // Save to Files, AirDrop…); elsewhere it falls back to a plain download
+  async function deliver(content, filename, type) {
+    try {
+      const file = new File([content], filename, { type: type.split(";")[0] });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: filename });
+        return;
+      }
+    } catch (e) {
+      if (e && e.name === "AbortError") return; // user closed the share sheet — not an error
+    }
+    download(content, filename, type);
+  }
+
+  document.getElementById("exportSel").addEventListener("change", ev => {
+    const v = ev.target.value;
+    ev.target.value = "";
+    if (v === "csv") exportCsv();
+    if (v === "json") exportJson();
+  });
+
+  function exportCsv() {
+    try {
+      const log = logGet();
+      const llog = JSON.parse(store.get("ritual-assimil-log") || "{}") || {};
+      const lessonsByDate = {};
+      Object.keys(llog).forEach(n => { (lessonsByDate[llog[n]] = lessonsByDate[llog[n]] || []).push(n); });
+      const habitNames = allSteps.filter(s => !s.kind).map(s => s.t);
+      const eveNames = eveSteps.filter(s => !s.kind).map(s => s.t);
+      const allDates = new Set(Object.keys(log));
+      graceSet.forEach(d => allDates.add(d));
+      historySet.forEach(d => allDates.add(d));
+      eveHistorySet.forEach(d => allDates.add(d));
+      const esc = v => '"' + String(v).replace(/"/g, '""') + '"';
+      const dowOf = d => DOW_NAMES[new Date(d + "T00:00:00").getDay()];
+      const rows = [[
+        "Date", "Day of week", "Weekend", "Not logged", "Backfilled", "Morning ritual complete", "Beyond the minimum", "Sleep score (%)", "Sleep rating", "Sleep note", "Morning mood (1-10)", "Most Important Task", "Grace day",
+        ...habitNames.map(h => "Morning: " + h),
+        "Evening ritual complete", "Evening mood (1-10)", "Feeling", "Feeling why", "MIT accomplished", "MIT reason (if not)", "Body notes",
+        ...eveNames.map(h => "Evening: " + h),
+        "Move activity (what)", "Steps",
+        "Assimil lessons finished"
+      ].map(esc).join(",")];
+      Array.from(allDates).sort().forEach(d => {
+        const e = log[d] || {};
+        const dow = e.dayOfWeek || dowOf(d);
+        rows.push([
+          d,
+          dow,
+          (dow === "Saturday" || dow === "Sunday") ? "Yes" : "No",
+          e.notLogged ? "Yes" : "",
+          e.backfilled ? "Yes" : "",
+          e.complete ? "Yes" : "No",
+          e.exceeded ? "Yes" : "No",
+          (e.sleepScore !== undefined && e.sleepScore !== null) ? e.sleepScore : (e.sleepNoData ? "no data" : ""),
+          e.sleepRating || "",
+          e.sleepNote || "",
+          e.mood || "",
+          e.mit || "",
+          graceMap[d] === "sick" ? "Sick" : graceMap[d] === "travel" ? "Travel" : "",
+          ...habitNames.map(h => (e.habits || []).indexOf(h) >= 0 ? "Yes" : "No"),
+          e.eveningComplete ? "Yes" : "No",
+          e.eveningMood || "",
+          (e.feeling && FEEL_BY_KEY[e.feeling]) ? FEEL_BY_KEY[e.feeling].label : "",
+          e.feelingWhy || "",
+          e.mitDone === true ? "Yes" : e.mitDone === false ? "No" : "",
+          e.mitReason || "",
+          (e.bodyNotes || []).join("; "),
+          ...eveNames.map(h => (e.eveningHabits || []).indexOf(h) >= 0 ? "Yes" : "No"),
+          e.moveActivity || "",
+          (e.steps !== undefined && e.steps !== null) ? e.steps : "",
+          (lessonsByDate[d] || []).join(" ")
+        ].map(esc).join(","));
+      });
+      deliver("﻿" + rows.join("\r\n"), "ritual-data.csv", "text/csv;charset=utf-8");
+    } catch (e) {}
+  }
+
+  // single source of truth for exports AND sync — always reads fresh from storage
+  function buildExportData() {
+    const rd = (k, dflt) => { try { return JSON.parse(store.get(k) || dflt); } catch (e) { return JSON.parse(dflt); } };
+    const lessonsArr = rd("ritual-assimil", "[]") || [];
+    return {
+      exported: new Date().toISOString(),
+      morningCompletedDays: rd("ritual-history", "[]") || [],
+      eveningCompletedDays: rd("ritual-evening-history", "[]") || [],
+      graceDays: rd("ritual-grace2", "{}") || {},
+      dailyHabitLog: rd("ritual-log", "{}") || {},
+      assimil: {
+        lessonsDone: lessonsArr.map((v, i) => v ? i + 1 : null).filter(Boolean),
+        lessonDates: rd("ritual-assimil-log", "{}") || {}
+      },
+      photoCleanup: rd("ritual-photos", "{}") || {}
+    };
+  }
+
+  function exportJson() {
+    try {
+      deliver(JSON.stringify(buildExportData(), null, 2), "ritual-data.json", "application/json");
+    } catch (e) {}
+  }
+
+  // ---- photo cleanup tracker: Oct 2016 → Aug 2026, one cell per month ----
+  const PHOTO_START = { y: 2016, m: 10 };
+  const PHOTO_END = { y: 2026, m: 8 };
+  const MONTH_LETTERS = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
+  let photoMap = {};
+  try {
+    const p = JSON.parse(store.get("ritual-photos") || "null");
+    if (p && typeof p === "object" && !Array.isArray(p)) photoMap = p;
+  } catch (e) {}
+
+  function photoInRange(y, m) {
+    if (y < PHOTO_START.y || y > PHOTO_END.y) return false;
+    if (y === PHOTO_START.y && m < PHOTO_START.m) return false;
+    if (y === PHOTO_END.y && m > PHOTO_END.m) return false;
+    return true;
+  }
+  const PHOTO_TOTAL = (() => {
+    let n = 0;
+    for (let y = PHOTO_START.y; y <= PHOTO_END.y; y++) for (let m = 1; m <= 12; m++) if (photoInRange(y, m)) n++;
+    return n;
+  })();
+  const photoCells = {};
+
+  (function buildPhotoTracker() {
+    const root = document.getElementById("photoYears");
+    for (let y = PHOTO_START.y; y <= PHOTO_END.y; y++) {
+      const row = document.createElement("div");
+      row.className = "photo-year";
+      const lab = document.createElement("b");
+      lab.textContent = y;
+      row.appendChild(lab);
+      const months = document.createElement("div");
+      months.className = "photo-months";
+      for (let m = 1; m <= 12; m++) {
+        const key = y + "-" + String(m).padStart(2, "0");
+        const cell = document.createElement("div");
+        cell.className = "pm" + (photoInRange(y, m) ? "" : " off");
+        cell.textContent = MONTH_LETTERS[m - 1];
+        cell.title = MONTHS[m - 1] + " " + y;
+        if (photoInRange(y, m)) {
+          cell.addEventListener("click", () => {
+            if (photoMap[key]) delete photoMap[key]; else photoMap[key] = true;
+            store.set("ritual-photos", JSON.stringify(photoMap));
+            renderPhotos();
+          });
+          photoCells[key] = cell;
+        }
+        months.appendChild(cell);
+      }
+      row.appendChild(months);
+      root.appendChild(row);
+    }
+  })();
+
+  function renderPhotos() {
+    let done = 0, next = null;
+    for (let y = PHOTO_START.y; y <= PHOTO_END.y; y++) {
+      for (let m = 1; m <= 12; m++) {
+        if (!photoInRange(y, m)) continue;
+        const key = y + "-" + String(m).padStart(2, "0");
+        const isDone = !!photoMap[key];
+        if (isDone) done++;
+        else if (!next) next = key;
+        photoCells[key].classList.toggle("done", isDone);
+        photoCells[key].classList.remove("next");
+      }
+    }
+    if (next) photoCells[next].classList.add("next");
+    const count = document.getElementById("photoCount");
+    count.textContent = done + " of " + PHOTO_TOTAL + " months";
+    if (done === PHOTO_TOTAL) count.textContent = PHOTO_TOTAL + " of " + PHOTO_TOTAL + " — a decade of photos, clean 🎉";
+    document.getElementById("photoBarFill").style.width = Math.round(done / PHOTO_TOTAL * 100) + "%";
+  }
+  renderPhotos();
+
+  // ---- GitHub sync (private repo, debounced auto-push, pull+merge on launch) ----
+  const SYNC_KEY = "ritual-sync";
+  function syncCfg() { try { return JSON.parse(store.get(SYNC_KEY) || "null"); } catch (e) { return null; } }
+  function syncMeta(v) {
+    if (v !== undefined) store.set("ritual-sync-meta", JSON.stringify(v));
+    try { return JSON.parse(store.get("ritual-sync-meta") || "{}") || {}; } catch (e) { return {}; }
+  }
+  function apiUrl(cfg) { return "https://api.github.com/repos/" + cfg.owner + "/" + cfg.repo + "/contents/data.json"; }
+  function hdrs(cfg) { return { "Authorization": "Bearer " + cfg.token, "Accept": "application/vnd.github+json" }; }
+  function setSyncStatus(t) { const el = document.getElementById("syncStatus"); if (el) el.textContent = t; }
+
+  async function syncPush() {
+    const cfg = syncCfg();
+    if (!cfg) return;
+    try {
+      setSyncStatus("Syncing…");
+      const url = apiUrl(cfg);
+      let sha;
+      const g = await fetch(url, { headers: hdrs(cfg) });
+      if (g.ok) sha = (await g.json()).sha;
+      const body = JSON.stringify(buildExportData(), null, 1);
+      const content = btoa(unescape(encodeURIComponent(body)));
+      const e = logGet()[today] || {};
+      const msg = "sync " + today + (e.complete ? " · morning done" : "") + (e.eveningComplete ? " · evening done" : "");
+      const put = await fetch(url, {
+        method: "PUT",
+        headers: hdrs(cfg),
+        body: JSON.stringify({ message: msg, content: content, sha: sha })
+      });
+      if (!put.ok) throw new Error("HTTP " + put.status);
+      const now = new Date();
+      const meta = syncMeta(); meta.lastSync = now.toISOString(); syncMeta(meta);
+      setSyncStatus("Synced · " + now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+    } catch (err) {
+      setSyncStatus("Sync failed — will retry after the next change");
+    }
+  }
+
+  let syncTimer = null;
+  scheduleSync = function () {
+    if (!syncCfg()) return;
+    setSyncStatus("Changes pending — syncing shortly…");
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => { syncTimer = null; syncPush(); }, 30000);
+  };
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden" && syncTimer) {
+      clearTimeout(syncTimer);
+      syncTimer = null;
+      syncPush();
+    }
+    // day rollover: if the app was left open (or resumed from the app switcher)
+    // past 3 a.m., reload so today's fields reset — yesterday's data stays in the log
+    if (document.visibilityState === "visible" && dateKey(ritualNow()) !== realToday) {
+      localStorage.removeItem("ritual-backfill");
+      location.reload();
+    }
+  });
+
+  function mergeRemote(remote) {
+    let changed = false;
+    try {
+      // per-date habit log: the entry updated most recently wins
+      const local = logGet();
+      const rlog = remote.dailyHabitLog || {};
+      Object.keys(rlog).forEach(d => {
+        const l = local[d], r = rlog[d];
+        if (!l) { local[d] = r; changed = true; }
+        else {
+          // field-level merge: newer entry's fields win, but the older side's
+          // extra fields survive (iPhone morning + iPad body note both kept)
+          const rNewer = (r.updated || "") > (l.updated || "");
+          const merged = rNewer ? Object.assign({}, l, r) : Object.assign({}, r, l);
+          if (JSON.stringify(merged) !== JSON.stringify(l)) { local[d] = merged; changed = true; }
+        }
+      });
+      store.set("ritual-log", JSON.stringify(local));
+      // completed-day lists: union
+      [["ritual-history", "morningCompletedDays"], ["ritual-evening-history", "eveningCompletedDays"]].forEach(pair => {
+        const cur = JSON.parse(store.get(pair[0]) || "[]") || [];
+        const set = new Set(cur);
+        (remote[pair[1]] || []).forEach(d => { if (!set.has(d)) { set.add(d); changed = true; } });
+        store.set(pair[0], JSON.stringify(Array.from(set).sort()));
+      });
+      // grace days: add any we don't have
+      const g = JSON.parse(store.get("ritual-grace2") || "{}") || {};
+      Object.keys(remote.graceDays || {}).forEach(d => { if (!g[d]) { g[d] = remote.graceDays[d]; changed = true; } });
+      store.set("ritual-grace2", JSON.stringify(g));
+      // photo cleanup: a month cleaned anywhere is cleaned everywhere
+      if (remote.photoCleanup && typeof remote.photoCleanup === "object") {
+        const p = JSON.parse(store.get("ritual-photos") || "{}") || {};
+        Object.keys(remote.photoCleanup).forEach(k => { if (!p[k]) { p[k] = true; changed = true; } });
+        store.set("ritual-photos", JSON.stringify(p));
+      }
+      // assimil: a lesson done anywhere is done everywhere
+      if (remote.assimil) {
+        const cur = JSON.parse(store.get("ritual-assimil") || "null") || new Array(100).fill(false);
+        (remote.assimil.lessonsDone || []).forEach(n => { if (n >= 1 && n <= 100 && !cur[n - 1]) { cur[n - 1] = true; changed = true; } });
+        store.set("ritual-assimil", JSON.stringify(cur));
+        const ld = JSON.parse(store.get("ritual-assimil-log") || "{}") || {};
+        Object.keys(remote.assimil.lessonDates || {}).forEach(n => { if (!ld[n]) { ld[n] = remote.assimil.lessonDates[n]; changed = true; } });
+        store.set("ritual-assimil-log", JSON.stringify(ld));
+      }
+    } catch (e) {}
+    return changed;
+  }
+
+  async function syncPull(initialLoad) {
+    const cfg = syncCfg();
+    if (!cfg) return false;
+    try {
+      const g = await fetch(apiUrl(cfg), { headers: hdrs(cfg) });
+      if (!g.ok) return false;
+      const j = await g.json();
+      const text = decodeURIComponent(escape(atob((j.content || "").replace(/\n/g, ""))));
+      const remote = JSON.parse(text);
+      const changed = mergeRemote(remote);
+      if (changed && initialLoad) {
+        // reload once so the UI reflects merged data (guard against loops)
+        const meta = syncMeta();
+        const last = meta.lastReload ? new Date(meta.lastReload).getTime() : 0;
+        if (Date.now() - last > 15000) {
+          meta.lastReload = new Date().toISOString();
+          syncMeta(meta);
+          location.reload();
+        }
+      }
+      return changed;
+    } catch (e) { return false; }
+  }
+
+  function renderSyncUI() {
+    const cfg = syncCfg();
+    document.getElementById("syncSetup").hidden = !!cfg;
+    document.getElementById("syncInfo").hidden = !cfg;
+    if (cfg) {
+      document.getElementById("syncRepoLabel").textContent = "Connected to " + cfg.owner + "/" + cfg.repo + " (private)";
+      const meta = syncMeta();
+      if (meta.lastSync) {
+        setSyncStatus("Last synced " + new Date(meta.lastSync).toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }));
+      }
+    }
+  }
+
+  document.getElementById("syncConnect").addEventListener("click", async () => {
+    const owner = document.getElementById("syncOwner").value.trim();
+    const repo = document.getElementById("syncRepo").value.trim();
+    const token = document.getElementById("syncToken").value.trim();
+    const msgEl = document.getElementById("syncSetupMsg");
+    if (!owner || !repo || !token) { msgEl.textContent = "Please fill in all three fields."; return; }
+    msgEl.textContent = "Checking connection…";
+    try {
+      const r = await fetch("https://api.github.com/repos/" + owner + "/" + repo, { headers: { "Authorization": "Bearer " + token, "Accept": "application/vnd.github+json" } });
+      if (!r.ok) { msgEl.textContent = "Couldn't reach the repository — check the username, repo name, and token."; return; }
+      const info = await r.json();
+      if (!info.private) { msgEl.textContent = "That repository is PUBLIC — please use a private one for your data."; return; }
+      store.set(SYNC_KEY, JSON.stringify({ owner: owner, repo: repo, token: token }));
+      msgEl.textContent = "";
+      renderSyncUI();
+      await syncPull(true);   // if another device already synced, merge its data first
+      await syncPush();       // then upload the merged state
+    } catch (e) {
+      msgEl.textContent = "Connection failed — are you online?";
+    }
+  });
+
+  document.getElementById("syncNow").addEventListener("click", () => syncPush());
+  document.getElementById("syncDisconnect").addEventListener("click", () => {
+    store.del(SYNC_KEY);
+    renderSyncUI();
+  });
+
+  // end-of-day safety sync: if the app is open (or in the app switcher) late evening,
+  // push once at 23:55 so every day closes with a saved snapshot
+  function scheduleMidnightSync() {
+    const now = new Date();
+    const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 55, 0);
+    if (target <= now) target.setDate(target.getDate() + 1);
+    setTimeout(() => { syncPush(); scheduleMidnightSync(); }, target.getTime() - now.getTime());
+  }
+  scheduleMidnightSync();
+
+  renderSyncUI();
+  syncPull(true);
+
+  // offline support
+  try {
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js").catch(() => {});
+  } catch (e) {}
+</script>
+</body>
+</html>
